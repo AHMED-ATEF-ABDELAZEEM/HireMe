@@ -1,0 +1,84 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{CBD012E6-F233-407D-871D-93D2565A29A2}|HireMe\\HireMe.csproj|d:\\programming\\back end\\learnapi\\projects\\hireme\\hireme\\helpers\\iemailhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBD012E6-F233-407D-871D-93D2565A29A2}|HireMe\\HireMe.csproj|solutionrelative:hireme\\helpers\\iemailhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBD012E6-F233-407D-871D-93D2565A29A2}|HireMe\\HireMe.csproj|d:\\programming\\back end\\learnapi\\projects\\hireme\\hireme\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBD012E6-F233-407D-871D-93D2565A29A2}|HireMe\\HireMe.csproj|solutionrelative:hireme\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dell\\AppData\\Roaming\\Microsoft\\UserSecrets\\b07e8063-e990-44a9-90c4-5e41d2d74f7d\\secrets.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBD012E6-F233-407D-871D-93D2565A29A2}|HireMe\\HireMe.csproj|d:\\programming\\back end\\learnapi\\projects\\hireme\\hireme\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{CBD012E6-F233-407D-871D-93D2565A29A2}|HireMe\\HireMe.csproj|solutionrelative:hireme\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "HireMe\\Controllers\\AuthController.cs",
+              "ToolTip": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "HireMe\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAAD8AAAAAAAAAAAA7wEYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-28T14:14:25.296Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "IEmailHelper.cs",
+              "DocumentMoniker": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Helpers\\IEmailHelper.cs",
+              "RelativeDocumentMoniker": "HireMe\\Helpers\\IEmailHelper.cs",
+              "ToolTip": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Helpers\\IEmailHelper.cs",
+              "RelativeToolTip": "HireMe\\Helpers\\IEmailHelper.cs",
+              "ViewState": "AgIAACIAAAAAAAAAAAAAACgAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-28T14:12:18.775Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\appsettings.json",
+              "RelativeDocumentMoniker": "HireMe\\appsettings.json",
+              "ToolTip": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\appsettings.json",
+              "RelativeToolTip": "HireMe\\appsettings.json",
+              "ViewState": "AgIAABgAAAAAAAAAAAAAACkAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-11-28T13:57:56.379Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "secrets.json",
+              "DocumentMoniker": "C:\\Users\\dell\\AppData\\Roaming\\Microsoft\\UserSecrets\\b07e8063-e990-44a9-90c4-5e41d2d74f7d\\secrets.json",
+              "ToolTip": "C:\\Users\\dell\\AppData\\Roaming\\Microsoft\\UserSecrets\\b07e8063-e990-44a9-90c4-5e41d2d74f7d\\secrets.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAACiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-11-27T17:52:12.517Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

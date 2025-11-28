@@ -1,0 +1,14 @@
+﻿using HireMe.Consts;
+using HireMe.CustomResult;
+
+namespace HireMe.CustomErrors
+{
+    public class ImageProfileError
+    {
+        public static Error ImageTooLarge => new Error("Image.TooLarge", $"Image is too large to upload, max size is {ImageProfileSettings.MaxFileSizeInMB} MB");
+
+        public static Error InvalidExtension => new Error("Image.InvalidExtension", $"Invalid image extension,Only Extension Allowed are {String.Join(", ", ImageProfileSettings.AllowedExtensions)}");
+
+        public static Error NoProfileImage => new Error("Image.NoProfile", "You do not have a profile image to remove.");
+    }
+}
