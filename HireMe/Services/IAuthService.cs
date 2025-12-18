@@ -70,11 +70,11 @@ namespace HireMe.Services
                 return Result.Failure<AuthResponse>(UserError.ExternalLogin);
             }
 
-            if (!user.EmailConfirmed)
-            {
-                _logger.LogWarning("Authentication failed: User with email {Email} is not confirmed", email);
-                return Result.Failure<AuthResponse>(UserError.EmailNotConfirmed);
-            }
+            //if (!user.EmailConfirmed)
+            //{
+            //    _logger.LogWarning("Authentication failed: User with email {Email} is not confirmed", email);
+            //    return Result.Failure<AuthResponse>(UserError.EmailNotConfirmed);
+            //}
 
             var result = await _signInManager.PasswordSignInAsync(user, password, false, lockoutOnFailure: true);
 

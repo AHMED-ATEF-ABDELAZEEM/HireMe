@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using HireMe.Consts;
 using HireMe.Contracts.Auth.Requests;
+using HireMe.Enums;
 
 namespace HireMe.Contracts.Auth.Validations
 {
@@ -25,6 +26,8 @@ namespace HireMe.Contracts.Auth.Validations
                 .Length(3, 100);
 
             RuleFor(x => x.UserType)
+                .NotEqual(UserType.UnDefined)
+                .WithMessage("User type is required.")
                 .IsInEnum()
                 .WithMessage("Invalid user type.");
 

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace HireMe.Helpers
 {
-    public interface IEmailHelper
+    public interface IEmailHelper 
     {
         Task SendConfirmationEmail(ApplicationUser user, string code);
         Task SendResetPasswordEmail(ApplicationUser user, string code);

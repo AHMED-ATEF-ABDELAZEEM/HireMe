@@ -209,3 +209,4 @@ D:\Programming\Back End\LearnAPI\Projects\HireMe\HireMe\obj\Debug\net9.0\HireMe.
 D:\Programming\Back End\LearnAPI\Projects\HireMe\HireMe\obj\Debug\net9.0\ref\HireMe.dll
 D:\Programming\Back End\LearnAPI\Projects\HireMe\HireMe\bin\Debug\net9.0\appsettings.json
 D:\Programming\Back End\LearnAPI\Projects\HireMe\HireMe\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
+D:\Programming\Back End\LearnAPI\Projects\HireMe\HireMe\obj\Debug\net9.0\HireMe.sourcelink.json

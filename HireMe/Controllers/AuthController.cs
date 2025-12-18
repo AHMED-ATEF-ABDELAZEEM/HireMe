@@ -68,7 +68,7 @@ namespace HireMe.Controllers
             return result.IsSuccess ? Ok() : BadRequest(result.Error);
         }
 
-        [HttpPost("confirm-email")]
+        [HttpGet("confirm-email")]
         public async Task<IActionResult> ConfirmEmail([FromQuery] ConfirmEmailRequest request)
         {
             var result = await _registrationService.ConfirmEmailAsync(request);

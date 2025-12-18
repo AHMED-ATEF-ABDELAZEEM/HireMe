@@ -2,7 +2,8 @@ namespace HireMe.Enums
 {
     public enum UserType
     {
-        Employer = 0,
-        Worker = 1
+        UnDefined = 0,
+        Employer = 1,
+        Worker = 2
     }
 }

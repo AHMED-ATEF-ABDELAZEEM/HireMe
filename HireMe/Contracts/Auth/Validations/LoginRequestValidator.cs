@@ -14,8 +14,7 @@ namespace HireMe.Contracts.Auth.Validations
 
             RuleFor(x => x.password)
                 .NotEmpty()
-                .Matches(PasswordRules.PasswordPattern)
-                .WithMessage(PasswordRules.PasswordErrorMessage);
+                .Length(6, 100);
 
         }
     }

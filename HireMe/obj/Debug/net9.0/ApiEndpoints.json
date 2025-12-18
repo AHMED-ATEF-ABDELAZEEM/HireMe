@@ -8,9 +8,14 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "request",
-        "Type": "HireMe.Contracts.Auth.Requests.ConfirmEmailRequest",
-        "IsRequired": true
+        "Name": "UserId",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Code",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -153,22 +158,6 @@
     "Parameters": [
       {
         "Name": "returnUrl",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "HireMe.Controllers.AuthController",
-    "Method": "TestSendEmail",
-    "RelativePath": "Auth/test-send-email",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "email",
         "Type": "System.String",
         "IsRequired": false
       }
