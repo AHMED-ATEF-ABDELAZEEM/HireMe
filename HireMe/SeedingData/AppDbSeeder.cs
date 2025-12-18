@@ -1,5 +1,7 @@
 ﻿using HireMe.Models;
+using HireMe.Persistence;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace HireMe.SeedingData
 {
@@ -7,12 +9,14 @@ namespace HireMe.SeedingData
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly AppDbContext _context;
         private readonly IConfiguration _config;
         private readonly ILogger<AppDbSeeder> _logger;
 
         public AppDbSeeder(
             UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
+            AppDbContext context,
             IConfiguration config,
             ILogger<AppDbSeeder> logger)
         {
@@ -20,6 +24,7 @@ namespace HireMe.SeedingData
             _roleManager = roleManager;
             _config = config;
             _logger = logger;
+            _context = context;
         }
 
         public async Task SeedAsync()
@@ -34,6 +39,37 @@ namespace HireMe.SeedingData
 
 
             _logger.LogInformation("🚀 Starting database seeding...");
+
+
+            // add default governates
+            bool isGovernoratesEmpty = !_context.Governorates.Any();
+
+            if (isGovernoratesEmpty)
+            {
+                _logger.LogInformation("🌍 Seeding default governates...");
+
+                using (var transaction = await _context.Database.BeginTransactionAsync())
+                {
+                    // فعل IDENTITY_INSERT
+                    await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [Governorates] ON");
+
+                    var governorates = DefaultGovernorates.All;
+                    await _context.Governorates.AddRangeAsync(governorates);
+
+                    await _context.SaveChangesAsync();
+
+                    // أغلق IDENTITY_INSERT
+                    await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [Governorates] OFF");
+
+                    await transaction.CommitAsync();
+                }
+
+                _logger.LogInformation("✅ Default governates seeded successfully.");
+            }
+            else
+            {
+                _logger.LogInformation("ℹ️ Governates already exist. Skipping governate seeding.");
+            }
 
             // 1. Read DefaultAdmin section from appsettings
             var adminSection = _config.GetSection("DefaultAdmin").Get<DefaultAdmin>();

@@ -3,6 +3,18 @@
   "WorkspaceRootPath": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|d:\\programming\\back end\\learnapi\\projects\\hireme\\hireme\\seedingdata\\defaultgovernates.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|solutionrelative:hireme\\seedingdata\\defaultgovernates.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|d:\\programming\\back end\\learnapi\\projects\\hireme\\hireme\\seedingdata\\appdbseeder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|solutionrelative:hireme\\seedingdata\\appdbseeder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|d:\\programming\\back end\\learnapi\\projects\\hireme\\hireme\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|solutionrelative:hireme\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|d:\\programming\\back end\\learnapi\\projects\\hireme\\hireme\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|solutionrelative:hireme\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -13,10 +25,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|d:\\programming\\back end\\learnapi\\projects\\hireme\\hireme\\contracts\\auth\\validations\\registerrequestvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|solutionrelative:hireme\\contracts\\auth\\validations\\registerrequestvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|d:\\programming\\back end\\learnapi\\projects\\hireme\\hireme\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|solutionrelative:hireme\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|d:\\programming\\back end\\learnapi\\projects\\hireme\\hireme\\services\\iauthservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -62,19 +70,45 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "DefaultGovernates.cs",
+              "DocumentMoniker": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\SeedingData\\DefaultGovernates.cs",
+              "RelativeDocumentMoniker": "HireMe\\SeedingData\\DefaultGovernates.cs",
+              "ToolTip": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\SeedingData\\DefaultGovernates.cs*",
+              "RelativeToolTip": "HireMe\\SeedingData\\DefaultGovernates.cs*",
+              "ViewState": "AgIAABEAAAAAAAAAAAAAwCkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T16:05:09.186Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AppDbSeeder.cs",
+              "DocumentMoniker": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\SeedingData\\AppDbSeeder.cs",
+              "RelativeDocumentMoniker": "HireMe\\SeedingData\\AppDbSeeder.cs",
+              "ToolTip": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\SeedingData\\AppDbSeeder.cs",
+              "RelativeToolTip": "HireMe\\SeedingData\\AppDbSeeder.cs",
+              "ViewState": "AgIAAC4AAAAAAAAAAAAIwDgAAABMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T15:56:02.815Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "AuthController.cs",
               "DocumentMoniker": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "HireMe\\Controllers\\AuthController.cs",
-              "ToolTip": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Controllers\\AuthController.cs*",
-              "RelativeToolTip": "HireMe\\Controllers\\AuthController.cs*",
-              "ViewState": "AgIAAD8AAAAAAAAAAAA7wEYAAAAQAAAAAAAAAA==",
+              "ToolTip": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "HireMe\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAADgAAAAAAAAAAAAgwEYAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-30T11:26:38.372Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 11,
               "Title": "UserError.cs",
               "DocumentMoniker": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\CustomErrors\\UserError.cs",
               "RelativeDocumentMoniker": "HireMe\\CustomErrors\\UserError.cs",
@@ -82,12 +116,11 @@
               "RelativeToolTip": "HireMe\\CustomErrors\\UserError.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-30T11:03:16.509Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-30T11:03:16.509Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 10,
               "Title": "IUserCreationHelper.cs",
               "DocumentMoniker": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Helpers\\IUserCreationHelper.cs",
               "RelativeDocumentMoniker": "HireMe\\Helpers\\IUserCreationHelper.cs",
@@ -95,12 +128,11 @@
               "RelativeToolTip": "HireMe\\Helpers\\IUserCreationHelper.cs",
               "ViewState": "AgIAADoAAAAAAAAAAAAkwA8AAABXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-29T11:37:54.47Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-29T11:37:54.47Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 9,
               "Title": "IRegistrationService.cs",
               "DocumentMoniker": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Services\\IRegistrationService.cs",
               "RelativeDocumentMoniker": "HireMe\\Services\\IRegistrationService.cs",
@@ -108,12 +140,11 @@
               "RelativeToolTip": "HireMe\\Services\\IRegistrationService.cs",
               "ViewState": "AgIAACQAAAAAAAAAAAAAACgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-29T11:37:13.639Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-29T11:37:13.639Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "RegisterRequest.cs",
               "DocumentMoniker": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Contracts\\Auth\\Requests\\RegisterRequest.cs",
               "RelativeDocumentMoniker": "HireMe\\Contracts\\Auth\\Requests\\RegisterRequest.cs",
@@ -121,12 +152,11 @@
               "RelativeToolTip": "HireMe\\Contracts\\Auth\\Requests\\RegisterRequest.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-29T11:34:45.362Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-29T11:34:45.362Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "UserType.cs",
               "DocumentMoniker": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Enums\\UserType.cs",
               "RelativeDocumentMoniker": "HireMe\\Enums\\UserType.cs",
@@ -134,12 +164,11 @@
               "RelativeToolTip": "HireMe\\Enums\\UserType.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-29T11:27:20.029Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-29T11:27:20.029Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "IAuthService.cs",
               "DocumentMoniker": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Services\\IAuthService.cs",
               "RelativeDocumentMoniker": "HireMe\\Services\\IAuthService.cs",
@@ -147,25 +176,24 @@
               "RelativeToolTip": "HireMe\\Services\\IAuthService.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAADsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-28T16:58:41.456Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-28T16:58:41.456Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Program.cs",
               "RelativeDocumentMoniker": "HireMe\\Program.cs",
               "ToolTip": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Program.cs",
               "RelativeToolTip": "HireMe\\Program.cs",
-              "ViewState": "AgIAAEMAAAAAAAAAAAAQwEIAAAANAAAAAAAAAA==",
+              "ViewState": "AgIAAEMAAAAAAAAAAAAQwFAAAABSAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-28T16:58:17.974Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "RegisterRequestValidator.cs",
               "DocumentMoniker": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Contracts\\Auth\\Validations\\RegisterRequestValidator.cs",
               "RelativeDocumentMoniker": "HireMe\\Contracts\\Auth\\Validations\\RegisterRequestValidator.cs",
@@ -173,12 +201,11 @@
               "RelativeToolTip": "HireMe\\Contracts\\Auth\\Validations\\RegisterRequestValidator.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAABgAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-28T16:55:25.212Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-28T16:55:25.212Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "IEmailHelper.cs",
               "DocumentMoniker": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Helpers\\IEmailHelper.cs",
               "RelativeDocumentMoniker": "HireMe\\Helpers\\IEmailHelper.cs",
@@ -186,12 +213,11 @@
               "RelativeToolTip": "HireMe\\Helpers\\IEmailHelper.cs",
               "ViewState": "AgIAAB8AAAAAAAAAAAAAAAoAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-28T14:12:18.775Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-28T14:12:18.775Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 13,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\appsettings.json",
               "RelativeDocumentMoniker": "HireMe\\appsettings.json",
@@ -203,7 +229,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 12,
               "Title": "secrets.json",
               "DocumentMoniker": "C:\\Users\\dell\\AppData\\Roaming\\Microsoft\\UserSecrets\\b07e8063-e990-44a9-90c4-5e41d2d74f7d\\secrets.json",
               "ToolTip": "C:\\Users\\dell\\AppData\\Roaming\\Microsoft\\UserSecrets\\b07e8063-e990-44a9-90c4-5e41d2d74f7d\\secrets.json",

@@ -78,6 +78,7 @@ namespace HireMe
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IPasswordService, PasswordService>();
             builder.Services.AddScoped<IRegistrationService, RegistrationService>();
+            builder.Services.AddScoped<IGovernorateService, GovernorateService>();
 
 
             builder.Services.AddScoped<IImageProfileService, ImageProfileService>();

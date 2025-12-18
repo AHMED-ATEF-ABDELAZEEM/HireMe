@@ -12,6 +12,8 @@ namespace HireMe.Persistence
 
         }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        
+        public DbSet<Governorate> Governorates {get;set;} 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
