@@ -17,4 +17,5 @@ namespace HireMe.Persistence.ModelConfiguration
                 .HasMaxLength(50);
         }
     }
+    
 }
