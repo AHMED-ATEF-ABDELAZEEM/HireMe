@@ -79,6 +79,7 @@ namespace HireMe
             builder.Services.AddScoped<IPasswordService, PasswordService>();
             builder.Services.AddScoped<IRegistrationService, RegistrationService>();
             builder.Services.AddScoped<IGovernorateService, GovernorateService>();
+            builder.Services.AddScoped<IJobService, JobService>();
 
 
             builder.Services.AddScoped<IImageProfileService, ImageProfileService>();
@@ -216,7 +217,7 @@ namespace HireMe
 
             app.UseHttpsRedirection();
 
-            app.UseHangfireDashboard("/jobs", new DashboardOptions
+            app.UseHangfireDashboard("/background-jobs", new DashboardOptions
             {
                 Authorization =
                 [

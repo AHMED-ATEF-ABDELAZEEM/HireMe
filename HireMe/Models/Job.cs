@@ -5,7 +5,7 @@ namespace HireMe.Models
 {
     public class Job
     {
-        public int JobId { get; set; }
+        public int Id { get; set; }
 
         public string JobTitle { get; set; } = string.Empty;
 

@@ -1,10 +1,11 @@
+using FluentValidation;
+using HireMe.Consts;
+using HireMe.Contracts.Job.Requests;
+using HireMe.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FluentValidation;
-using HireMe.Consts;
-using HireMe.Contracts.Job.Requests;
 
 namespace HireMe.Contracts.Job.Validations
 {
@@ -19,6 +20,7 @@ namespace HireMe.Contracts.Job.Validations
                 .MaximumLength(50);
 
              RuleFor(x => x.Salary)
+                .NotEmpty()
                 .GreaterThanOrEqualTo(100).WithMessage("the salary must be at least 100")
                 .LessThanOrEqualTo(20000).WithMessage("the salary must not exceed 20000");
 
@@ -29,7 +31,6 @@ namespace HireMe.Contracts.Job.Validations
                 .WithMessage("At least one work day must be selected.");
 
             RuleFor(x => x.Gender)
-                .NotEmpty()
                 .IsInEnum()
                 .WithMessage("Invalid gender value.");
 
@@ -61,7 +62,7 @@ namespace HireMe.Contracts.Job.Validations
 
         private bool BeAValidBitmask(int workDays)
         {
-            return (workDays & ~WorkDaysRules.AllowedMask) == 0;
+             return (workDays & ~WorkDaysRules.AllowedMask) == 0;
         }
 
         private bool HaveAtLeastOneDay(int workDays)

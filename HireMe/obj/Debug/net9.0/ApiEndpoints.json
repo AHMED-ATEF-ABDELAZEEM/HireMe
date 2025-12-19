@@ -175,6 +175,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "HireMe.Controllers.JobsController",
+    "Method": "CreateJob",
+    "RelativePath": "Jobs",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "HireMe.Contracts.Job.Requests.JobRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "HireMe.Controllers.AccountsController",
     "Method": "GetUserProfile",
     "RelativePath": "me",
