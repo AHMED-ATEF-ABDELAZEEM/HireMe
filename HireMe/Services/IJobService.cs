@@ -1,4 +1,5 @@
 using System.Numerics;
+using HireMe.Consts;
 using HireMe.Contracts.Job.Requests;
 using HireMe.CustomErrors;
 using HireMe.CustomResult;
@@ -13,6 +14,7 @@ namespace HireMe.Services
     public interface IJobService
     {
         Task<Result<Job>> CreateJobAsync(JobRequest jobRequest,CancellationToken cancellationToken = default);
+        Task<Result<IEnumerable<string>>> GetWorkDaysAtJobInArabicAsync(int jobId, CancellationToken cancellationToken = default);
     }
 
     public class JobService : IJobService
@@ -71,8 +73,23 @@ namespace HireMe.Services
             return (int)hours;
         }
 
+        public async Task<Result<IEnumerable<string>>> GetWorkDaysAtJobInArabicAsync(int jobId, CancellationToken cancellationToken = default)
+        {
+            _logger.LogInformation("Retrieving work days for job ID: {JobId}", jobId);
 
+            var job = await _context.Jobs
+                .Where(j => j.Id == jobId)
+                .Select(j => new { j.WorkDays })
+                .FirstOrDefaultAsync(cancellationToken);
 
+            if (job is null)
+            {
+                _logger.LogWarning("Failed to retrieve work days: Job with ID {JobId} not found", jobId);
+                return Result.Failure<IEnumerable<string>>(JobErrors.JobNotFound);
+            }
 
+            _logger.LogInformation("Successfully retrieved work days for job ID: {JobId}", jobId);
+            return Result.Success(WorkDaysInArabic.GetDays(job.WorkDays));
+        }
     }
 }

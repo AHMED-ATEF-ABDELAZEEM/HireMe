@@ -191,6 +191,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "HireMe.Controllers.JobsController",
+    "Method": "GetWorkDaysInArabic",
+    "RelativePath": "Jobs/days",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "workDays",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "HireMe.Controllers.AccountsController",
     "Method": "GetUserProfile",
     "RelativePath": "me",

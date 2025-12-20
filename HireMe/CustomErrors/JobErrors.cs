@@ -9,5 +9,6 @@ namespace HireMe.CustomErrors
     public class JobErrors
     {
         public static Error InvalidGovernorate = new Error("InvalidGovernorate", "The specified governorate does not exist.");
+        public static Error JobNotFound = new Error("JobNotFound", "The specified job does not exist.");
     }
 }

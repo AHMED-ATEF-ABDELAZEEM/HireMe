@@ -26,5 +26,13 @@ namespace HireMe.Controllers
 
             return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
         }
+
+        [HttpGet("{Id}/days")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetWorkDaysInArabic([FromRoute] int Id, CancellationToken cancellationToken)
+        {
+            var result = await _jobService.GetWorkDaysAtJobInArabicAsync(Id, cancellationToken);
+            return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+        }
     }
 }
