@@ -1,6 +1,7 @@
 using System.Numerics;
 using HireMe.Consts;
 using HireMe.Contracts.Job.Requests;
+using HireMe.Contracts.Job.Responses;
 using HireMe.CustomErrors;
 using HireMe.CustomResult;
 using HireMe.Enums;
@@ -14,6 +15,7 @@ namespace HireMe.Services
     public interface IJobService
     {
         Task<Result<Job>> CreateJobAsync(JobRequest jobRequest,CancellationToken cancellationToken = default);
+        Task<Result<JobResponse>> GetJobByIdAsync(int jobId, CancellationToken cancellationToken = default);
         Task<Result<IEnumerable<string>>> GetWorkDaysAtJobInArabicAsync(int jobId, CancellationToken cancellationToken = default);
     }
 
@@ -47,8 +49,8 @@ namespace HireMe.Services
 
 
 
-                // await _context.Jobs.AddAsync(job, cancellationToken);
-                // await  _context.SaveChangesAsync(cancellationToken);
+            await _context.Jobs.AddAsync(job, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
             _logger.LogInformation("job created successfully with ID: {JobId}", job.Id);
             return Result.Success(job);
         }
@@ -71,6 +73,41 @@ namespace HireMe.Services
             var hours = (end - start).TotalHours;
 
             return (int)hours;
+        }
+
+        public async Task<Result<JobResponse>> GetJobByIdAsync(int jobId, CancellationToken cancellationToken = default)
+        {
+            _logger.LogInformation("Retrieving job with ID: {JobId}", jobId);
+
+            var job = await _context.Jobs
+                .Where(j => j.Id == jobId)
+                .Select(j => new JobResponse
+                {
+                    Id = j.Id,
+                    JobTitle = j.JobTitle,
+                    Salary = j.Salary,
+                    HasAccommodation = j.HasAccommodation,
+                    WorkingDaysPerWeek = j.WorkingDaysPerWeek,
+                    WorkingHoursPerDay = j.WorkingHoursPerDay,
+                    Gender = j.Gender,
+                    ShiftType = j.ShiftType,
+                    ShiftStartTime = j.ShiftStartTime,
+                    ShiftEndTime = j.ShiftEndTime,
+                    Address = j.Address,
+                    Description = j.Description,
+                    Experience = j.Experience,
+                    GovernorateName = j.Governorate.NameArabic
+                })
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (job is null)
+            {
+                _logger.LogWarning("Failed to retrieve job: Job with ID {JobId} not found", jobId);
+                return Result.Failure<JobResponse>(JobErrors.JobNotFound);
+            }
+
+            _logger.LogInformation("Successfully retrieved job with ID: {JobId}", jobId);
+            return Result.Success(job);
         }
 
         public async Task<Result<IEnumerable<string>>> GetWorkDaysAtJobInArabicAsync(int jobId, CancellationToken cancellationToken = default)
