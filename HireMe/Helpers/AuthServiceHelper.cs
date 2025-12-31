@@ -78,6 +78,8 @@ namespace HireMe.Helpers
 
             _logger.LogInformation("Refresh token stored in database for user {Email}", user.Email);
 
+            var userType = MapRoleToUserType(userRoles.FirstOrDefault());
+
             return new AuthResponse
             {
                 Id = user.Id,
@@ -87,7 +89,18 @@ namespace HireMe.Helpers
                 Token = tokenInformation.Token,
                 ExpireIn = tokenInformation.ExpiresIn * 60,
                 RefreshToken = refreshToken,
-                RefreshTokenExpiration = refreshTokenExpirationDate
+                RefreshTokenExpiration = refreshTokenExpirationDate,
+                UserType = userType
+            };
+        }
+
+        private Enums.UserType MapRoleToUserType(string? role)
+        {
+            return role switch
+            {
+                DefaultRoles.Employer => Enums.UserType.Employer,
+                DefaultRoles.Worker => Enums.UserType.Worker,
+                _ => Enums.UserType.UnDefined
             };
         }
 

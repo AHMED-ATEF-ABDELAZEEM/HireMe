@@ -193,15 +193,15 @@
   {
     "ContainingType": "HireMe.Controllers.JobsController",
     "Method": "GetWorkDaysInArabic",
-    "RelativePath": "Jobs/days",
+    "RelativePath": "Jobs/{Id}/days",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "workDays",
+        "Name": "Id",
         "Type": "System.Int32",
-        "IsRequired": false
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []

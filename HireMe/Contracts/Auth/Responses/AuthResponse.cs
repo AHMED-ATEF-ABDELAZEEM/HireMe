@@ -1,4 +1,6 @@
-﻿namespace HireMe.Contracts.Auth.Responses
+﻿using HireMe.Enums;
+
+namespace HireMe.Contracts.Auth.Responses
 {
     public class AuthResponse
     {
@@ -10,5 +12,6 @@
         public int ExpireIn { get; set; }
         public string RefreshToken { get; set; }
         public DateTime RefreshTokenExpiration { get; set; }
+        public UserType UserType { get; set; }
     }
 }
