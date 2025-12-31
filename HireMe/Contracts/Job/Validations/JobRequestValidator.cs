@@ -13,6 +13,7 @@ namespace HireMe.Contracts.Job.Validations
     {
 
         private const int MinShiftHours = 2;
+        private const int MaxShiftHours = 14;
         public JobRequestValidator()
         {
             RuleFor(x => x.JobTitle)
@@ -24,11 +25,11 @@ namespace HireMe.Contracts.Job.Validations
                 .GreaterThanOrEqualTo(100).WithMessage("the salary must be at least 100")
                 .LessThanOrEqualTo(20000).WithMessage("the salary must not exceed 20000");
 
+            
             RuleFor(x => x.WorkDays)
-                .Must(BeAValidBitmask)
-                .WithMessage("WorkDays contains invalid days.")
-                .Must(HaveAtLeastOneDay)
-                .WithMessage("At least one work day must be selected.");
+               .InclusiveBetween(1, 127)
+               .WithMessage("WorkDays must be between 1 and 127.");
+               
 
             RuleFor(x => x.Gender)
                 .IsInEnum()
@@ -42,7 +43,7 @@ namespace HireMe.Contracts.Job.Validations
 
             RuleFor(x => x)
                 .Must(HaveValidShiftDuration)
-                .WithMessage($"The shift duration must be at least {MinShiftHours} hours.");
+                .WithMessage($"The shift duration must be at least {MinShiftHours} hours and at most {MaxShiftHours} hours.");
 
             RuleFor(x => x.Address)
                 .MaximumLength(100)
@@ -60,16 +61,6 @@ namespace HireMe.Contracts.Job.Validations
         }
 
 
-        private bool BeAValidBitmask(int workDays)
-        {
-             return (workDays & ~WorkDaysRules.AllowedMask) == 0;
-        }
-
-        private bool HaveAtLeastOneDay(int workDays)
-        {
-            return workDays != 0;
-        }
-
         private bool HaveValidShiftDuration(JobRequest jobRequest)
         {
             DateTime start = new DateTime(1, 1, 1, jobRequest.ShiftStartTime.Hour, jobRequest.ShiftStartTime.Minute, jobRequest.ShiftStartTime.Second);
@@ -82,7 +73,7 @@ namespace HireMe.Contracts.Job.Validations
 
             var hours = (end - start).TotalHours;
 
-            return hours >= MinShiftHours;
+            return hours >= MinShiftHours && hours <= MaxShiftHours;
         }
     }
 }
