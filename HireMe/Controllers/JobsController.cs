@@ -42,5 +42,13 @@ namespace HireMe.Controllers
             var result = await _jobService.GetWorkDaysAtJobInArabicAsync(Id, cancellationToken);
             return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
         }
+
+        [HttpPut("{id}/close")]
+        [AllowAnonymous]
+        public async Task<IActionResult> CloseJob([FromRoute] int id, CancellationToken cancellationToken)
+        {
+            var result = await _jobService.CloseJobAsync(id, cancellationToken);
+            return result.IsSuccess ? NoContent() : BadRequest(result.Error);
+        }
     }
 }

@@ -17,6 +17,7 @@ namespace HireMe.Services
         Task<Result<Job>> CreateJobAsync(JobRequest jobRequest,CancellationToken cancellationToken = default);
         Task<Result<JobResponse>> GetJobByIdAsync(int jobId, CancellationToken cancellationToken = default);
         Task<Result<IEnumerable<string>>> GetWorkDaysAtJobInArabicAsync(int jobId, CancellationToken cancellationToken = default);
+        Task<Result> CloseJobAsync(int jobId, CancellationToken cancellationToken = default);
     }
 
     public class JobService : IJobService
@@ -127,6 +128,32 @@ namespace HireMe.Services
 
             _logger.LogInformation("Successfully retrieved work days for job ID: {JobId}", jobId);
             return Result.Success(WorkDaysInArabic.GetDays(job.WorkDays));
+        }
+
+        public async Task<Result> CloseJobAsync(int jobId, CancellationToken cancellationToken = default)
+        {
+            _logger.LogInformation("Attempting to close job with ID: {JobId}", jobId);
+
+            var job = await _context.Jobs
+                .FirstOrDefaultAsync(j => j.Id == jobId, cancellationToken);
+
+            if (job is null)
+            {
+                _logger.LogWarning("Failed to close job: Job with ID {JobId} not found", jobId);
+                return Result.Failure(JobErrors.JobNotFound);
+            }
+
+            if (job.Status == JobStatus.Closed)
+            {
+                _logger.LogWarning("Failed to close job: Job with ID {JobId} is already closed", jobId);
+                return Result.Failure(JobErrors.JobAlreadyClosed);
+            }
+
+            job.Status = JobStatus.Closed;
+            await _context.SaveChangesAsync(cancellationToken);
+
+            _logger.LogInformation("Successfully closed job with ID: {JobId}", jobId);
+            return Result.Success();
         }
     }
 }

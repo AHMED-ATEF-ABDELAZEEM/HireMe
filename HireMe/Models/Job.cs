@@ -30,8 +30,7 @@ namespace HireMe.Models
         public string? Description { get; set; }
         public string? Experience { get; set; }
 
-
-
+       public JobStatus Status {get;set;} = JobStatus.published;
 
         [ForeignKey(nameof(Governorate))]
         public int GovernorateId {get;set;}
