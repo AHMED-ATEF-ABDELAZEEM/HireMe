@@ -1,11 +1,14 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using HireMe.Enums;
 
 namespace HireMe.Models
 {
-    public class Question : BaseEntity
+    public class Application : BaseEntity
     {
+        public string? Message { get; set; }
 
-        public string QuestionText { get; set; } = string.Empty;
+        public ApplicationStatus Status { get; set; } = ApplicationStatus.Applied;
+
 
         [ForeignKey(nameof(Job))]
         public int JobId { get; set; }
@@ -14,8 +17,7 @@ namespace HireMe.Models
 
         [ForeignKey(nameof(Worker))]
         public string WorkerId { get; set; } = string.Empty;
-
         public ApplicationUser? Worker { get; set; }
-        public Answer? Answer { get; set; }
+
     }
 }

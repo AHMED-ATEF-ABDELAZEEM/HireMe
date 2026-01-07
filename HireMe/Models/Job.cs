@@ -3,9 +3,8 @@ using HireMe.Enums;
 
 namespace HireMe.Models
 {
-    public class Job
+    public class Job : BaseEntity
     {
-        public int Id { get; set; }
 
         public string JobTitle { get; set; } = string.Empty;
 
@@ -30,12 +29,18 @@ namespace HireMe.Models
         public string? Description { get; set; }
         public string? Experience { get; set; }
 
-       public JobStatus Status {get;set;} = JobStatus.published;
+        [ForeignKey(nameof(Employer))]
+        public string EmployerId { get; set; } = string.Empty;
+        public ApplicationUser? Employer { get; set; }
+
+       public JobStatus Status {get;set;} = JobStatus.Published;
 
         [ForeignKey(nameof(Governorate))]
         public int GovernorateId {get;set;}
 
         public Governorate? Governorate {get;set;}  
+        public ICollection<Question>? Questions { get; set; }
+        public ICollection<Application>? Applications { get; set; }
 
     }
 }
