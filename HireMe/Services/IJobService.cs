@@ -14,7 +14,7 @@ namespace HireMe.Services
 {
     public interface IJobService
     {
-        Task<Result<Job>> CreateJobAsync(JobRequest jobRequest,CancellationToken cancellationToken = default);
+        Task<Result<Job>> CreateJobAsync(string employerId, JobRequest jobRequest, CancellationToken cancellationToken = default);
         Task<Result<JobResponse>> GetJobByIdAsync(int jobId, CancellationToken cancellationToken = default);
         Task<Result<IEnumerable<string>>> GetWorkDaysAtJobInArabicAsync(int jobId, CancellationToken cancellationToken = default);
         Task<Result> CloseJobAsync(int jobId, CancellationToken cancellationToken = default);
@@ -30,7 +30,7 @@ namespace HireMe.Services
             _logger = logger;
         }
 
-        public async Task<Result<Job>> CreateJobAsync(JobRequest jobRequest, CancellationToken cancellationToken = default)
+        public async Task<Result<Job>> CreateJobAsync(string employerId, JobRequest jobRequest, CancellationToken cancellationToken = default)
         {
 
             _logger.LogInformation("starting job creation process");
@@ -44,6 +44,7 @@ namespace HireMe.Services
 
             var job = jobRequest.Adapt<Job>();
 
+            job.EmployerId = employerId;
             job.WorkingDaysPerWeek = CalculateWorkingDayPerWeek(jobRequest.WorkDays);
             job.WorkingHoursPerDay = CalculateShiftDurationHours(jobRequest.ShiftStartTime, jobRequest.ShiftEndTime);
             job.ShiftType =   jobRequest.ShiftStartTime.Hour < 12 ? ShiftType.Morning : ShiftType.Night;

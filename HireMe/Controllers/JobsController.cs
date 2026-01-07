@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using HireMe.Consts;
 using HireMe.Contracts.Job.Requests;
 using HireMe.Services;
@@ -19,10 +20,11 @@ namespace HireMe.Controllers
         }
 
         [HttpPost]              
-        [AllowAnonymous]
+        [Authorize]
         public async Task<IActionResult> CreateJob([FromBody] JobRequest request, CancellationToken cancellationToken)
         {
-            var result = await _jobService.CreateJobAsync(request, cancellationToken);
+            var employerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _jobService.CreateJobAsync(employerId!, request, cancellationToken);
 
             return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
         }
