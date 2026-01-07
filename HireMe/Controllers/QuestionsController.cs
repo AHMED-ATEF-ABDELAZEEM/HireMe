@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HireMe.Controllers
 {
-    [Route("jobs/{jobId}/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     [Authorize]
     public class QuestionsController : ControllerBase
@@ -19,16 +19,16 @@ namespace HireMe.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddQuestion([FromRoute] int jobId, [FromBody] AddQuestionRequest request, CancellationToken cancellationToken)
+        public async Task<IActionResult> AddQuestion([FromBody] AddQuestionRequest request, CancellationToken cancellationToken)
         {
             var WorkerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var result = await _questionService.AddQuestionAsync(WorkerId!, jobId, request, cancellationToken);
+            var result = await _questionService.AddQuestionAsync(WorkerId!, request, cancellationToken);
 
             return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
         }
 
         [HttpPut("{questionId}")]
-        public async Task<IActionResult> UpdateQuestion([FromRoute] int jobId, [FromRoute] int questionId, [FromBody] UpdateQuestionRequest request, CancellationToken cancellationToken)
+        public async Task<IActionResult> UpdateQuestion([FromRoute] int questionId, [FromBody] UpdateQuestionRequest request, CancellationToken cancellationToken)
         {
             var workerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var result = await _questionService.UpdateQuestionAsync(workerId!, questionId, request, cancellationToken);

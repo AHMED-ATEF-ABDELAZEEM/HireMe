@@ -10,7 +10,7 @@ namespace HireMe.Services
 {
     public interface IQuestionService
     {
-        Task<Result<Question>> AddQuestionAsync(string WorkerId, int jobId, AddQuestionRequest request, CancellationToken cancellationToken = default);
+        Task<Result<Question>> AddQuestionAsync(string WorkerId, AddQuestionRequest request, CancellationToken cancellationToken = default);
         Task<Result> UpdateQuestionAsync(string workerId, int questionId, UpdateQuestionRequest request, CancellationToken cancellationToken = default);
     }
 
@@ -25,31 +25,31 @@ namespace HireMe.Services
             _logger = logger;
         }
 
-        public async Task<Result<Question>> AddQuestionAsync(string WorkerId, int jobId, AddQuestionRequest request, CancellationToken cancellationToken = default)
+        public async Task<Result<Question>> AddQuestionAsync(string WorkerId, AddQuestionRequest request, CancellationToken cancellationToken = default)
         {
-            _logger.LogInformation("Starting question creation process for user {UserId} on job {JobId}", WorkerId, jobId);
+            _logger.LogInformation("Starting question creation process for user {UserId} on job {JobId}", WorkerId, request.JobId);
 
             var job = await _context.Jobs
-                .Where(j => j.Id == jobId)
+                .Where(j => j.Id == request.JobId)
                 .Select(j => new { j.Id, j.Status })
                 .FirstOrDefaultAsync(cancellationToken);
                 
             if (job is null)
             {
-                _logger.LogWarning("Question creation failed: Job with ID {JobId} not found", jobId);
+                _logger.LogWarning("Question creation failed: Job with ID {JobId} not found", request.JobId);
                 return Result.Failure<Question>(JobErrors.JobNotFound);
             }
 
             if (job.Status != JobStatus.Published)
             {
-                _logger.LogWarning("Question creation failed: Job with ID {JobId} is not published (Status: {Status})", jobId, job.Status);
+                _logger.LogWarning("Question creation failed: Job with ID {JobId} is not published (Status: {Status})", request.JobId, job.Status);
                 return Result.Failure<Question>(JobErrors.JobNotAcceptingQuestions);
             }
 
             var question = new Question
             {
                 QuestionText = request.QuestionText,
-                JobId = jobId,
+                JobId = request.JobId,
                 WorkerId = WorkerId,
             };
 
