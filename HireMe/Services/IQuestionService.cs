@@ -12,6 +12,7 @@ namespace HireMe.Services
     {
         Task<Result<Question>> AddQuestionAsync(string WorkerId, AddQuestionRequest request, CancellationToken cancellationToken = default);
         Task<Result> UpdateQuestionAsync(string workerId, int questionId, UpdateQuestionRequest request, CancellationToken cancellationToken = default);
+        Task<Result> DeleteQuestionAsync(string workerId, int questionId, CancellationToken cancellationToken = default);
     }
 
     public class QuestionService : IQuestionService
@@ -92,6 +93,39 @@ namespace HireMe.Services
             await _context.SaveChangesAsync(cancellationToken);
 
             _logger.LogInformation("Question updated successfully with ID: {QuestionId}", question.Id);
+            return Result.Success();
+        }
+
+        public async Task<Result> DeleteQuestionAsync(string workerId, int questionId, CancellationToken cancellationToken = default)
+        {
+            _logger.LogInformation("Starting question deletion process for question {QuestionId} by user {UserId}", questionId, workerId);
+
+            var question = await _context.Questions
+                .Include(q => q.Answer)
+                .FirstOrDefaultAsync(q => q.Id == questionId, cancellationToken);
+
+            if (question is null)
+            {
+                _logger.LogWarning("Question deletion failed: Question with ID {QuestionId} not found", questionId);
+                return Result.Failure(QuestionErrors.QuestionNotFound);
+            }
+
+            if (question.WorkerId != workerId)
+            {
+                _logger.LogWarning("Question deletion failed: User {UserId} is not authorized to delete question {QuestionId}", workerId, questionId);
+                return Result.Failure(QuestionErrors.UnauthorizedQuestionUpdate);
+            }
+
+            if (question.Answer is not null)
+            {
+                _logger.LogWarning("Question deletion failed: Question {QuestionId} has already been answered", questionId);
+                return Result.Failure(QuestionErrors.QuestionAlreadyAnswered);
+            }
+
+            question.IsDeleted = true;
+            await _context.SaveChangesAsync(cancellationToken);
+
+            _logger.LogInformation("Question deleted successfully with ID: {QuestionId}", question.Id);
             return Result.Success();
         }
     }

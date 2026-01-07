@@ -21,6 +21,11 @@ namespace HireMe.Persistence
         
         protected override void OnModelCreating(ModelBuilder builder)
         {
+
+           builder.Entity<Job>().HasQueryFilter(j => !j.IsDeleted);
+           builder.Entity<Question>().HasQueryFilter(q => !q.IsDeleted);
+           builder.Entity<Answer>().HasQueryFilter(a => !a.IsDeleted);
+
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             base.OnModelCreating(builder);
         }
