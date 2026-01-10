@@ -35,5 +35,14 @@ namespace HireMe.Controllers
 
             return result.IsSuccess ? NoContent() : BadRequest(result.Error);
         }
+
+        [HttpDelete("{answerId}")]
+        public async Task<IActionResult> DeleteAnswer([FromRoute] int answerId, CancellationToken cancellationToken)
+        {
+            var employerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _answerService.DeleteAnswerAsync(employerId!, answerId, cancellationToken);
+
+            return result.IsSuccess ? NoContent() : BadRequest(result.Error);
+        }
     }
 }

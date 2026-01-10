@@ -11,6 +11,7 @@ namespace HireMe.Services
     {
         Task<Result<Answer>> AddAnswerAsync(string employerId, AddAnswerRequest request, CancellationToken cancellationToken = default);
         Task<Result> UpdateAnswerAsync(string employerId, int answerId, UpdateAnswerRequest request, CancellationToken cancellationToken = default);
+        Task<Result> DeleteAnswerAsync(string employerId, int answerId, CancellationToken cancellationToken = default);
     }
 
     public class AnswerService : IAnswerService
@@ -97,6 +98,32 @@ namespace HireMe.Services
             await _context.SaveChangesAsync(cancellationToken);
 
             _logger.LogInformation("Answer updated successfully with ID: {AnswerId}", answer.Id);
+            return Result.Success();
+        }
+
+        public async Task<Result> DeleteAnswerAsync(string employerId, int answerId, CancellationToken cancellationToken = default)
+        {
+            _logger.LogInformation("Starting answer deletion process for answer {AnswerId} by user {EmployerId}", answerId, employerId);
+
+            var answer = await _context.Answers
+                .FirstOrDefaultAsync(a => a.Id == answerId, cancellationToken);
+
+            if (answer is null)
+            {
+                _logger.LogWarning("Answer deletion failed: Answer with ID {AnswerId} not found", answerId);
+                return Result.Failure(AnswerErrors.AnswerNotFound);
+            }
+
+            if (answer.EmployerId != employerId)
+            {
+                _logger.LogWarning("Answer deletion failed: User {EmployerId} is not authorized to delete answer {AnswerId}", employerId, answerId);
+                return Result.Failure(AnswerErrors.UnauthorizedAnswerDelete);
+            }
+
+            answer.IsDeleted = true;
+            await _context.SaveChangesAsync(cancellationToken);
+
+            _logger.LogInformation("Answer deleted successfully with ID: {AnswerId}", answer.Id);
             return Result.Success();
         }
     }
