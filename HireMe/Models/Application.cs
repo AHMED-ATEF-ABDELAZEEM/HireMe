@@ -9,6 +9,8 @@ namespace HireMe.Models
 
         public ApplicationStatus Status { get; set; } = ApplicationStatus.Applied;
 
+        public DateTime? StatusChangedAt { get; set; }
+
         public int JobId { get; set; }
 
         public Job? Job { get; set; }
