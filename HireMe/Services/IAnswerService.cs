@@ -10,6 +10,7 @@ namespace HireMe.Services
     public interface IAnswerService
     {
         Task<Result<Answer>> AddAnswerAsync(string employerId, AddAnswerRequest request, CancellationToken cancellationToken = default);
+        Task<Result> UpdateAnswerAsync(string employerId, int answerId, UpdateAnswerRequest request, CancellationToken cancellationToken = default);
     }
 
     public class AnswerService : IAnswerService
@@ -45,10 +46,11 @@ namespace HireMe.Services
             }
 
             if (question.Job.EmployerId != employerId)
+            
             {
-                _logger.LogWarning("Answer creation failed: User {EmployerId} is not authorized to answer question {QuestionId}", employerId, request.QuestionId);
-                return Result.Failure<Answer>(AnswerErrors.UnauthorizedAnswerCreation);
-            }
+              _logger.LogWarning("Answer creation failed: User {EmployerId} is not authorized to answer question {QuestionId}", employerId, request.QuestionId);
+                return Result.Failure<Answer>(AnswerErrors.UnauthorizedAnswerCreation);              
+             }
 
             if (question.Answer is not null)
             {
@@ -63,11 +65,39 @@ namespace HireMe.Services
                 EmployerId = employerId
             };
 
-            await _context.Set<Answer>().AddAsync(answer, cancellationToken);
+            await _context.Answers.AddAsync(answer, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
 
             _logger.LogInformation("Answer created successfully with ID: {AnswerId} for question {QuestionId}", answer.Id, request.QuestionId);
             return Result.Success(answer);
+        }
+
+        public async Task<Result> UpdateAnswerAsync(string employerId, int answerId, UpdateAnswerRequest request, CancellationToken cancellationToken = default)
+        {
+            _logger.LogInformation("Starting answer update process for answer {AnswerId} by user {EmployerId}", answerId, employerId);
+
+            var answer = await _context.Answers
+                .FirstOrDefaultAsync(a => a.Id == answerId, cancellationToken);
+
+            if (answer is null)
+            {
+                _logger.LogWarning("Answer update failed: Answer with ID {AnswerId} not found", answerId);
+                return Result.Failure(AnswerErrors.AnswerNotFound);
+            }
+
+            if (answer.EmployerId != employerId)
+            {
+                _logger.LogWarning("Answer update failed: User {EmployerId} is not authorized to update answer {AnswerId}", employerId, answerId);
+                return Result.Failure(AnswerErrors.UnauthorizedAnswerUpdate);
+            }
+
+            answer.AnswerText = request.AnswerText;
+            answer.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync(cancellationToken);
+
+            _logger.LogInformation("Answer updated successfully with ID: {AnswerId}", answer.Id);
+            return Result.Success();
         }
     }
 }

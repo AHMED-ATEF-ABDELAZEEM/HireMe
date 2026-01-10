@@ -18,6 +18,12 @@ namespace HireMe.Persistence
         public DbSet<Job> Jobs {get;set;}
 
         public DbSet<Question> Questions {get;set;}
+
+        public DbSet<Answer> Answers {get;set;}
+
+        public DbSet<Application> Applications {get;set;}
+
+        
         
         protected override void OnModelCreating(ModelBuilder builder)
         {
