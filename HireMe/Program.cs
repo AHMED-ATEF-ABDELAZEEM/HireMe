@@ -83,6 +83,7 @@ namespace HireMe
             builder.Services.AddScoped<IGovernorateService, GovernorateService>();
             builder.Services.AddScoped<IJobService, JobService>();
             builder.Services.AddScoped<IQuestionService, QuestionService>();
+            builder.Services.AddScoped<IAnswerService, AnswerService>();
 
 
             builder.Services.AddScoped<IImageProfileService, ImageProfileService>();
