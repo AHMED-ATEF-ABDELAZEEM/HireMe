@@ -26,7 +26,6 @@ D:\Programming\Back End\LearnAPI\Projects\HireMe\HireMe\bin\Debug\net9.0\Microso
 D:\Programming\Back End\LearnAPI\Projects\HireMe\HireMe\bin\Debug\net9.0\Microsoft.AspNetCore.Cryptography.Internal.dll
 D:\Programming\Back End\LearnAPI\Projects\HireMe\HireMe\bin\Debug\net9.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
 D:\Programming\Back End\LearnAPI\Projects\HireMe\HireMe\bin\Debug\net9.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
-D:\Programming\Back End\LearnAPI\Projects\HireMe\HireMe\bin\Debug\net9.0\Microsoft.AspNetCore.OpenApi.dll
 D:\Programming\Back End\LearnAPI\Projects\HireMe\HireMe\bin\Debug\net9.0\Microsoft.Bcl.AsyncInterfaces.dll
 D:\Programming\Back End\LearnAPI\Projects\HireMe\HireMe\bin\Debug\net9.0\Microsoft.Build.Locator.dll
 D:\Programming\Back End\LearnAPI\Projects\HireMe\HireMe\bin\Debug\net9.0\Microsoft.CodeAnalysis.dll
@@ -209,3 +208,6 @@ D:\Programming\Back End\LearnAPI\Projects\HireMe\HireMe\obj\Debug\net9.0\HireMe.
 D:\Programming\Back End\LearnAPI\Projects\HireMe\HireMe\obj\Debug\net9.0\ref\HireMe.dll
 D:\Programming\Back End\LearnAPI\Projects\HireMe\HireMe\bin\Debug\net9.0\appsettings.json
 D:\Programming\Back End\LearnAPI\Projects\HireMe\HireMe\obj\Debug\net9.0\HireMe.sourcelink.json
+D:\Programming\Back End\LearnAPI\Projects\HireMe\HireMe\bin\Debug\net9.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\Programming\Back End\LearnAPI\Projects\HireMe\HireMe\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\Programming\Back End\LearnAPI\Projects\HireMe\HireMe\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerUI.dll

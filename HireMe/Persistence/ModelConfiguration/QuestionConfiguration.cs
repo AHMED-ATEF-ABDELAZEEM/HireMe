@@ -13,7 +13,7 @@ namespace HireMe.Persistence.ModelConfiguration
                 .HasMaxLength(500);
 
             builder.HasOne(q => q.Job)
-                .WithMany()
+                .WithMany(j => j.Questions)
                 .HasForeignKey(q => q.JobId)
                 .OnDelete(DeleteBehavior.Cascade);
 

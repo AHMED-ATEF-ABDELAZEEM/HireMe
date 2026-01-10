@@ -9,13 +9,10 @@ namespace HireMe.Models
 
         public ApplicationStatus Status { get; set; } = ApplicationStatus.Applied;
 
-
-        [ForeignKey(nameof(Job))]
         public int JobId { get; set; }
 
         public Job? Job { get; set; }
 
-        [ForeignKey(nameof(Worker))]
         public string WorkerId { get; set; } = string.Empty;
         public ApplicationUser? Worker { get; set; }
 

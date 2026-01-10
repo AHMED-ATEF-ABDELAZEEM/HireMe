@@ -25,6 +25,7 @@ namespace HireMe.Persistence
            builder.Entity<Job>().HasQueryFilter(j => !j.IsDeleted);
            builder.Entity<Question>().HasQueryFilter(q => !q.IsDeleted);
            builder.Entity<Answer>().HasQueryFilter(a => !a.IsDeleted);
+           builder.Entity<Application>().HasQueryFilter(a => !a.IsDeleted);
 
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             base.OnModelCreating(builder);

@@ -22,20 +22,24 @@ namespace HireMe.EmailSettings
         }
         public async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            var payload = new
-            {
-                sender = new { email = _emailSettings.Email, name = _emailSettings.DisplayName },
-                to = new[] { new { email } },
-                subject,
-                htmlContent = htmlMessage
-            };
 
-            using var request = new HttpRequestMessage(HttpMethod.Post, "https://api.brevo.com/v3/smtp/email");
-            request.Headers.Add("api-key", _emailSettings.ApiKey);
-            request.Content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.SendAsync(request);
-            response.EnsureSuccessStatusCode();
+            _logger.LogInformation("Sending email to {Email} with subject {Subject}", email, subject);
+
+            // var payload = new
+            // {
+            //     sender = new { email = _emailSettings.Email, name = _emailSettings.DisplayName },
+            //     to = new[] { new { email } },
+            //     subject,
+            //     htmlContent = htmlMessage
+            // };
+
+            // using var request = new HttpRequestMessage(HttpMethod.Post, "https://api.brevo.com/v3/smtp/email");
+            // request.Headers.Add("api-key", _emailSettings.ApiKey);
+            // request.Content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
+
+            // var response = await _httpClient.SendAsync(request);
+            // response.EnsureSuccessStatusCode();
         }
     }
 }

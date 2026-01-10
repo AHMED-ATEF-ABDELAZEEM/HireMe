@@ -62,15 +62,15 @@ namespace HireMe.Controllers
             return result.IsSuccess ? NoContent() : BadRequest(result.Error);
         }
 
-        [HttpPost("profile-image")]
-        public async Task<IActionResult> UploadProfileImage([FromForm] IFormFile Image, CancellationToken cancellationToken = default)
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //[HttpPost("profile-image")]
+        //public async Task<IActionResult> UploadProfileImage([FromForm] IFormFile Image, CancellationToken cancellationToken = default)
+        //{
+        //    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var result = await _imageProfileService.UploadProfileImageAsync(userId, Image, cancellationToken);
+        //    var result = await _imageProfileService.UploadProfileImageAsync(userId, Image, cancellationToken);
 
-            return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
-        }
+        //    return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+        //}
 
         [HttpDelete("profile-image")]
         public async Task<IActionResult> DeleteProfileImage(CancellationToken cancellationToken = default)

@@ -12,6 +12,9 @@ namespace HireMe.Persistence.ModelConfiguration
                 .IsRequired()
                 .HasMaxLength(50);
 
+            builder.Property(j => j.Salary)
+                .HasPrecision(18, 2);
+
             builder.Property(j => j.Address)
                 .HasMaxLength(100);
 

@@ -52,5 +52,7 @@ namespace HireMe.Controllers
             var result = await _jobService.CloseJobAsync(id, cancellationToken);
             return result.IsSuccess ? NoContent() : BadRequest(result.Error);
         }
+
+        
     }
 }

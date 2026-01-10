@@ -3,31 +3,43 @@
   "WorkspaceRootPath": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|d:\\programming\\back end\\learnapi\\projects\\hireme\\hireme\\migrations\\20251231114629_add job table.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|solutionrelative:hireme\\migrations\\20251231114629_add job table.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|d:\\programming\\back end\\learnapi\\projects\\hireme\\hireme\\enums\\preferredgender.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|solutionrelative:hireme\\enums\\preferredgender.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|d:\\programming\\back end\\learnapi\\projects\\hireme\\hireme\\services\\ijobservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|solutionrelative:hireme\\services\\ijobservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|d:\\programming\\back end\\learnapi\\projects\\hireme\\hireme\\controllers\\accountscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|solutionrelative:hireme\\controllers\\accountscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|d:\\programming\\back end\\learnapi\\projects\\hireme\\hireme\\controllers\\jobscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|solutionrelative:hireme\\controllers\\jobscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dell\\AppData\\Roaming\\Microsoft\\UserSecrets\\b07e8063-e990-44a9-90c4-5e41d2d74f7d\\secrets.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|d:\\programming\\back end\\learnapi\\projects\\hireme\\hireme\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|solutionrelative:hireme\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|d:\\programming\\back end\\learnapi\\projects\\hireme\\hireme\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|solutionrelative:hireme\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|d:\\programming\\back end\\learnapi\\projects\\hireme\\hireme\\contracts\\job\\validations\\jobrequestvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|solutionrelative:hireme\\contracts\\job\\validations\\jobrequestvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|d:\\programming\\back end\\learnapi\\projects\\hireme\\hireme\\services\\ijobservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|solutionrelative:hireme\\services\\ijobservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|d:\\programming\\back end\\learnapi\\projects\\hireme\\hireme\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|solutionrelative:hireme\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dell\\AppData\\Roaming\\Microsoft\\UserSecrets\\b07e8063-e990-44a9-90c4-5e41d2d74f7d\\secrets.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|d:\\programming\\back end\\learnapi\\projects\\hireme\\hireme\\hireme.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|solutionrelative:hireme\\hireme.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|d:\\programming\\back end\\learnapi\\projects\\hireme\\hireme\\migrations\\20251231114629_add job table.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|solutionrelative:hireme\\migrations\\20251231114629_add job table.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|d:\\programming\\back end\\learnapi\\projects\\hireme\\hireme\\controllers\\jobscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|solutionrelative:hireme\\controllers\\jobscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|d:\\programming\\back end\\learnapi\\projects\\hireme\\hireme\\contracts\\job\\validations\\jobrequestvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|solutionrelative:hireme\\contracts\\job\\validations\\jobrequestvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -42,6 +54,45 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "PreferredGender.cs",
+              "DocumentMoniker": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Enums\\PreferredGender.cs",
+              "RelativeDocumentMoniker": "HireMe\\Enums\\PreferredGender.cs",
+              "ToolTip": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Enums\\PreferredGender.cs*",
+              "RelativeToolTip": "HireMe\\Enums\\PreferredGender.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T18:01:13.241Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AccountsController.cs",
+              "DocumentMoniker": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Controllers\\AccountsController.cs",
+              "RelativeDocumentMoniker": "HireMe\\Controllers\\AccountsController.cs",
+              "ToolTip": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Controllers\\AccountsController.cs",
+              "RelativeToolTip": "HireMe\\Controllers\\AccountsController.cs",
+              "ViewState": "AgIAADwAAAAAAAAAAAAowEgAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T17:44:18.445Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "HireMe",
+              "DocumentMoniker": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\HireMe.csproj",
+              "RelativeDocumentMoniker": "HireMe\\HireMe.csproj",
+              "ToolTip": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\HireMe.csproj",
+              "RelativeToolTip": "HireMe\\HireMe.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-01-09T17:32:31.909Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
               "Title": "20251231114629_Add Job Table.cs",
               "DocumentMoniker": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Migrations\\20251231114629_Add Job Table.cs",
               "RelativeDocumentMoniker": "HireMe\\Migrations\\20251231114629_Add Job Table.cs",
@@ -54,73 +105,79 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "secrets.json",
               "DocumentMoniker": "C:\\Users\\dell\\AppData\\Roaming\\Microsoft\\UserSecrets\\b07e8063-e990-44a9-90c4-5e41d2d74f7d\\secrets.json",
               "ToolTip": "C:\\Users\\dell\\AppData\\Roaming\\Microsoft\\UserSecrets\\b07e8063-e990-44a9-90c4-5e41d2d74f7d\\secrets.json",
               "ViewState": "AgIAABUAAAAAAAAAAAAAAB0AAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-12-31T09:43:38.953Z"
+              "WhenOpened": "2025-12-31T09:43:38.953Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "launchSettings.json",
               "DocumentMoniker": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Properties\\launchSettings.json",
               "RelativeDocumentMoniker": "HireMe\\Properties\\launchSettings.json",
               "ToolTip": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Properties\\launchSettings.json",
               "RelativeToolTip": "HireMe\\Properties\\launchSettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAZAAAAAAAAAA==",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABUAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-12-31T09:30:45.153Z"
+              "WhenOpened": "2025-12-31T09:30:45.153Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "IJobService.cs",
               "DocumentMoniker": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Services\\IJobService.cs",
               "RelativeDocumentMoniker": "HireMe\\Services\\IJobService.cs",
               "ToolTip": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Services\\IJobService.cs",
               "RelativeToolTip": "HireMe\\Services\\IJobService.cs",
-              "ViewState": "AgIAACEAAAAAAAAAAAAowDAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAABcAAAAAAAAAAAAgwCYAAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-19T17:45:09.288Z"
+              "WhenOpened": "2025-12-19T17:45:09.288Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 9,
               "Title": "JobRequestValidator.cs",
               "DocumentMoniker": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Contracts\\Job\\Validations\\JobRequestValidator.cs",
               "RelativeDocumentMoniker": "HireMe\\Contracts\\Job\\Validations\\JobRequestValidator.cs",
               "ToolTip": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Contracts\\Job\\Validations\\JobRequestValidator.cs",
               "RelativeToolTip": "HireMe\\Contracts\\Job\\Validations\\JobRequestValidator.cs",
-              "ViewState": "AgIAADsAAAAAAAAAAAAwwCAAAAAiAAAAAAAAAA==",
+              "ViewState": "AgIAADsAAAAAAAAAAAAwwCAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-19T16:55:25.755Z"
+              "WhenOpened": "2025-12-19T16:55:25.755Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 2,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Program.cs",
               "RelativeDocumentMoniker": "HireMe\\Program.cs",
               "ToolTip": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Program.cs",
               "RelativeToolTip": "HireMe\\Program.cs",
-              "ViewState": "AgIAANQAAAAAAAAAAAAAANsAAAAyAAAAAAAAAA==",
+              "ViewState": "AgIAAM4AAAAAAAAAAAAMwNgAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-19T16:38:15.525Z"
+              "WhenOpened": "2025-12-19T16:38:15.525Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 8,
               "Title": "JobsController.cs",
               "DocumentMoniker": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Controllers\\JobsController.cs",
               "RelativeDocumentMoniker": "HireMe\\Controllers\\JobsController.cs",
               "ToolTip": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Controllers\\JobsController.cs",
               "RelativeToolTip": "HireMe\\Controllers\\JobsController.cs",
-              "ViewState": "AgIAABYAAAAAAAAAAAAQwCIAAAAkAAAAAAAAAA==",
+              "ViewState": "AgIAABYAAAAAAAAAAAAQwCIAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-19T16:37:13.041Z"
+              "WhenOpened": "2025-12-19T16:37:13.041Z",
+              "EditorCaption": ""
             }
           ]
         }
