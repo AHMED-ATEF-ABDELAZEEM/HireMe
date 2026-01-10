@@ -11,6 +11,7 @@ namespace HireMe.Services
     public interface IApplicationService
     {
         Task<Result<Application>> AddApplicationAsync(string workerId, AddApplicationRequest request, CancellationToken cancellationToken = default);
+        Task<Result> UpdateApplicationAsync(string workerId, int applicationId, UpdateApplicationRequest request, CancellationToken cancellationToken = default);
     }
 
     public class ApplicationService : IApplicationService
@@ -67,6 +68,40 @@ namespace HireMe.Services
 
             _logger.LogInformation("Application created successfully with ID: {ApplicationId} for job {JobId}", application.Id, request.JobId);
             return Result.Success(application);
+        }
+
+        public async Task<Result> UpdateApplicationAsync(string workerId, int applicationId, UpdateApplicationRequest request, CancellationToken cancellationToken = default)
+        {
+            _logger.LogInformation("Starting application update process for application {ApplicationId} by user {WorkerId}", applicationId, workerId);
+
+            var application = await _context.Applications
+                .FirstOrDefaultAsync(a => a.Id == applicationId, cancellationToken);
+
+            if (application is null)
+            {
+                _logger.LogWarning("Application update failed: Application with ID {ApplicationId} not found", applicationId);
+                return Result.Failure(ApplicationErrors.ApplicationNotFound);
+            }
+
+            if (application.WorkerId != workerId)
+            {
+                _logger.LogWarning("Application update failed: User {WorkerId} is not authorized to update application {ApplicationId}", workerId, applicationId);
+                return Result.Failure(ApplicationErrors.UnauthorizedApplicationUpdate);
+            }
+
+            if (application.Status != ApplicationStatus.Applied)
+            {
+                _logger.LogWarning("Application update failed: Application {ApplicationId} is not in Applied status (Status: {Status})", applicationId, application.Status);
+                return Result.Failure(ApplicationErrors.CannotUpdateApplication);
+            }
+
+            application.Message = request.Message;
+            application.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync(cancellationToken);
+
+            _logger.LogInformation("Application updated successfully with ID: {ApplicationId}", application.Id);
+            return Result.Success();
         }
     }
 }

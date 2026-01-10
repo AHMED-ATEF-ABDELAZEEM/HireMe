@@ -28,5 +28,15 @@ namespace HireMe.Controllers
 
             return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
         }
+
+        [HttpPut("{applicationId}")]
+        [Authorize(Roles = DefaultRoles.Worker)]
+        public async Task<IActionResult> UpdateApplication([FromRoute] int applicationId, [FromBody] UpdateApplicationRequest request, CancellationToken cancellationToken)
+        {
+            var workerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _applicationService.UpdateApplicationAsync(workerId!, applicationId, request, cancellationToken);
+
+            return result.IsSuccess ? NoContent() : BadRequest(result.Error);
+        }
     }
 }
