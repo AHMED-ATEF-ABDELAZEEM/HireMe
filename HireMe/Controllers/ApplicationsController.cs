@@ -58,5 +58,15 @@ namespace HireMe.Controllers
 
             return result.IsSuccess ? NoContent() : BadRequest(result.Error);
         }
+
+        [HttpPatch("{applicationId}/withdraw")]
+        [Authorize(Roles = DefaultRoles.Worker)]
+        public async Task<IActionResult> WithdrawApplication([FromRoute] int applicationId, CancellationToken cancellationToken)
+        {
+            var workerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _applicationService.WithdrawApplicationAsync(workerId!, applicationId, cancellationToken);
+
+            return result.IsSuccess ? NoContent() : BadRequest(result.Error);
+        }
     }
 }

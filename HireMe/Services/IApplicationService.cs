@@ -16,6 +16,7 @@ namespace HireMe.Services
         Task<Result> UpdateApplicationAsync(string workerId, int applicationId, UpdateApplicationRequest request, CancellationToken cancellationToken = default);
         Task<Result> AcceptApplicationAsync(string employerId, int applicationId, CancellationToken cancellationToken = default);
         Task<Result> RejectApplicationAsync(string employerId, int applicationId, CancellationToken cancellationToken = default);
+        Task<Result> WithdrawApplicationAsync(string workerId, int applicationId, CancellationToken cancellationToken = default);
     }
 
     public class ApplicationService : IApplicationService
@@ -222,6 +223,41 @@ namespace HireMe.Services
             await _context.SaveChangesAsync(cancellationToken);
 
             _logger.LogInformation("Application {ApplicationId} rejected successfully by employer {EmployerId}", applicationId, employerId);
+            return Result.Success();
+        }
+
+        public async Task<Result> WithdrawApplicationAsync(string workerId, int applicationId, CancellationToken cancellationToken = default)
+        {
+            _logger.LogInformation("Starting application withdrawal process for application {ApplicationId} by worker {WorkerId}", applicationId, workerId);
+
+            var application = await _context.Applications
+                .FirstOrDefaultAsync(a => a.Id == applicationId, cancellationToken);
+
+            if (application is null)
+            {
+                _logger.LogWarning("Application withdrawal failed: Application with ID {ApplicationId} not found", applicationId);
+                return Result.Failure(ApplicationErrors.ApplicationNotFound);
+            }
+
+            if (application.WorkerId != workerId)
+            {
+                _logger.LogWarning("Application withdrawal failed: Worker {WorkerId} is not authorized to withdraw application {ApplicationId}", workerId, applicationId);
+                return Result.Failure(ApplicationErrors.UnauthorizedApplicationUpdate);
+            }
+
+            if (application.Status != ApplicationStatus.Applied)
+            {
+                _logger.LogWarning("Application withdrawal failed: Application {ApplicationId} is not in Applied status (Status: {Status})", applicationId, application.Status);
+                return Result.Failure(ApplicationErrors.CannotUpdateApplication);
+            }
+
+            application.Status = ApplicationStatus.Withdrawn;
+            application.StatusChangedAt = DateTime.UtcNow;
+            application.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync(cancellationToken);
+
+            _logger.LogInformation("Application {ApplicationId} withdrawn successfully by worker {WorkerId}", applicationId, workerId);
             return Result.Success();
         }
 
