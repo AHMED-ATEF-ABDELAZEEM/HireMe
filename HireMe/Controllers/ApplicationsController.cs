@@ -38,5 +38,15 @@ namespace HireMe.Controllers
 
             return result.IsSuccess ? NoContent() : BadRequest(result.Error);
         }
+
+        [HttpPatch("{applicationId}/accept")]
+        [Authorize(Roles = DefaultRoles.Employer)]
+        public async Task<IActionResult> AcceptApplication([FromRoute] int applicationId, CancellationToken cancellationToken)
+        {
+            var employerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _applicationService.AcceptApplicationAsync(employerId!, applicationId, cancellationToken);
+
+            return result.IsSuccess ? NoContent() : BadRequest(result.Error);
+        }
     }
 }

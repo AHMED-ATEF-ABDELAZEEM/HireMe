@@ -13,5 +13,8 @@ namespace HireMe.CustomErrors
             "You cannot update this application because it has already been processed by the employer."
         );
         public static Error UnauthorizedApplicationUpdate = new Error("UnauthorizedApplicationUpdate", "You are not authorized to update this application.");
+        public static Error InvalidApplicationStatus = new Error("InvalidApplicationStatus", "Cannot accept this application. The application status has already been changed.");
+        public static Error JobNotOwnedByEmployer = new Error("JobNotOwnedByEmployer", "You do not have permission to accept applications for this job.");
+        public static Error WorkerHasActiveConnection = new Error("WorkerHasActiveConnection", "This worker already has an active job connection and cannot be accepted for another job.");
     }
 }

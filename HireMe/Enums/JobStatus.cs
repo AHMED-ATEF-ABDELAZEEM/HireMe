@@ -3,8 +3,8 @@ namespace HireMe.Enums
     public enum JobStatus
     {
         Published = 0,
-        inprogress = 1,
-        completed = 2,
+        InProgress = 1,
+        Completed = 2,
         Closed = 3,
 
     }

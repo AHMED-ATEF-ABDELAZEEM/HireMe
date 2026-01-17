@@ -5,6 +5,8 @@ using HireMe.Enums;
 using HireMe.Models;
 using HireMe.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Hangfire;
+using HireMe.BackgroundJobs;
 
 namespace HireMe.Services
 {
@@ -12,6 +14,7 @@ namespace HireMe.Services
     {
         Task<Result<Application>> AddApplicationAsync(string workerId, AddApplicationRequest request, CancellationToken cancellationToken = default);
         Task<Result> UpdateApplicationAsync(string workerId, int applicationId, UpdateApplicationRequest request, CancellationToken cancellationToken = default);
+        Task<Result> AcceptApplicationAsync(string employerId, int applicationId, CancellationToken cancellationToken = default);
     }
 
     public class ApplicationService : IApplicationService
@@ -103,5 +106,85 @@ namespace HireMe.Services
             _logger.LogInformation("Application updated successfully with ID: {ApplicationId}", application.Id);
             return Result.Success();
         }
+
+        public async Task<Result> AcceptApplicationAsync(string employerId, int applicationId, CancellationToken cancellationToken = default)
+        {
+            _logger.LogInformation("Starting application acceptance process for application {ApplicationId} by employer {EmployerId}", applicationId, employerId);
+
+            await  using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
+
+
+            var application = await _context.Applications
+                .Include(a => a.Job)
+                .FirstOrDefaultAsync(a => a.Id == applicationId, cancellationToken);
+
+            if (application is null)
+            {
+                _logger.LogWarning("Application acceptance failed: Application with ID {ApplicationId} not found", applicationId);
+                return Result.Failure(ApplicationErrors.ApplicationNotFound);
+            }
+
+            if (application.Job is null || application.Job.EmployerId != employerId)
+            {
+                _logger.LogWarning("Application acceptance failed: Employer {EmployerId} does not own the job for application {ApplicationId}", employerId, applicationId);
+                return Result.Failure(ApplicationErrors.JobNotOwnedByEmployer);
+            }
+
+            if (application.Job.Status != JobStatus.Published)
+            {
+                _logger.LogWarning("Application acceptance failed: Job {JobId} is not published (Status: {Status})", application.JobId, application.Job.Status);
+                return Result.Failure(ApplicationErrors.JobNotAcceptingApplications);
+            }
+
+            if (application.Status != ApplicationStatus.Applied)
+            {
+                _logger.LogWarning("Application acceptance failed: Application {ApplicationId} is not in Applied status (Status: {Status})", applicationId, application.Status);
+                return Result.Failure(ApplicationErrors.InvalidApplicationStatus);
+            }
+
+            // Check if worker already has an active connection
+            var workerHasActiveConnection = await _context.JobConnections
+                .AnyAsync(jc => jc.WorkerId == application.WorkerId && 
+                               jc.Status == JobConnectionStatus.Active, 
+                          cancellationToken);
+
+            if (workerHasActiveConnection)
+            {
+                _logger.LogWarning("Application acceptance failed: Worker {WorkerId} already has an active job connection", application.WorkerId);
+                return Result.Failure(ApplicationErrors.WorkerHasActiveConnection);
+            }
+
+            // Accept the application
+            application.Status = ApplicationStatus.Accepted;
+            application.StatusChangedAt = DateTime.UtcNow;
+            application.UpdatedAt = DateTime.UtcNow;
+            
+            application.Job.Status = JobStatus.InProgress;
+            application.Job.UpdatedAt = DateTime.UtcNow;
+
+            // Create JobConnection
+            var jobConnection = new JobConnection
+            {
+                JobId = application.JobId,
+                WorkerId = application.WorkerId,
+                EmployerId = employerId,
+                Status = JobConnectionStatus.Active,
+                InteractionEndDate = DateTime.UtcNow.AddDays(10)
+            };
+
+            await _context.JobConnections.AddAsync(jobConnection, cancellationToken);
+
+            await _context.SaveChangesAsync(cancellationToken);
+            await transaction.CommitAsync(cancellationToken);
+
+            // Enqueue background job to handle related application status updates
+            BackgroundJob.Enqueue<IApplicationJob>(job => 
+                job.HandleApplicationAcceptanceAsync(application.JobId, applicationId, application.WorkerId));
+
+            _logger.LogInformation("Application {ApplicationId} accepted successfully by employer {EmployerId}. JobConnection {JobConnectionId} created. Background job enqueued.", 
+                applicationId, employerId, jobConnection.Id);
+            return Result.Success();
+        }
+
     }
 }

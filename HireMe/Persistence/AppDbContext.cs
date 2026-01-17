@@ -23,6 +23,8 @@ namespace HireMe.Persistence
 
         public DbSet<Application> Applications {get;set;}
 
+        public DbSet<JobConnection> JobConnections {get;set;}
+
         
         
         protected override void OnModelCreating(ModelBuilder builder)
@@ -32,6 +34,7 @@ namespace HireMe.Persistence
            builder.Entity<Question>().HasQueryFilter(q => !q.IsDeleted);
            builder.Entity<Answer>().HasQueryFilter(a => !a.IsDeleted);
            builder.Entity<Application>().HasQueryFilter(a => !a.IsDeleted);
+           builder.Entity<JobConnection>().HasQueryFilter(jc => !jc.IsDeleted);
 
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             base.OnModelCreating(builder);
