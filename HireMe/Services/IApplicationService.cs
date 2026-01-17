@@ -15,6 +15,7 @@ namespace HireMe.Services
         Task<Result<Application>> AddApplicationAsync(string workerId, AddApplicationRequest request, CancellationToken cancellationToken = default);
         Task<Result> UpdateApplicationAsync(string workerId, int applicationId, UpdateApplicationRequest request, CancellationToken cancellationToken = default);
         Task<Result> AcceptApplicationAsync(string employerId, int applicationId, CancellationToken cancellationToken = default);
+        Task<Result> RejectApplicationAsync(string employerId, int applicationId, CancellationToken cancellationToken = default);
     }
 
     public class ApplicationService : IApplicationService
@@ -183,6 +184,44 @@ namespace HireMe.Services
 
             _logger.LogInformation("Application {ApplicationId} accepted successfully by employer {EmployerId}. JobConnection {JobConnectionId} created. Background job enqueued.", 
                 applicationId, employerId, jobConnection.Id);
+            return Result.Success();
+        }
+
+        public async Task<Result> RejectApplicationAsync(string employerId, int applicationId, CancellationToken cancellationToken = default)
+        {
+            _logger.LogInformation("Starting application rejection process for application {ApplicationId} by employer {EmployerId}", applicationId, employerId);
+
+            var application = await _context.Applications
+                .Include(a => a.Job)
+                .FirstOrDefaultAsync(a => a.Id == applicationId, cancellationToken);
+
+            if (application is null)
+            {
+                _logger.LogWarning("Application rejection failed: Application with ID {ApplicationId} not found", applicationId);
+                return Result.Failure(ApplicationErrors.ApplicationNotFound);
+            }
+
+            if (application.Status != ApplicationStatus.Applied)
+            {
+                _logger.LogWarning("Application rejection failed: Application {ApplicationId} is not in Applied status (Status: {Status})", applicationId, application.Status);
+                return Result.Failure(ApplicationErrors.InvalidApplicationStatus);
+            }
+
+            if (application.Job is null || application.Job.EmployerId != employerId)
+            {
+                _logger.LogWarning("Application rejection failed: Employer {EmployerId} does not own the job for application {ApplicationId}", employerId, applicationId);
+                return Result.Failure(ApplicationErrors.JobNotOwnedByEmployer);
+            }
+
+
+
+            application.Status = ApplicationStatus.Rejected;
+            application.StatusChangedAt = DateTime.UtcNow;
+            application.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync(cancellationToken);
+
+            _logger.LogInformation("Application {ApplicationId} rejected successfully by employer {EmployerId}", applicationId, employerId);
             return Result.Success();
         }
 
