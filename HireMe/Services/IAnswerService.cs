@@ -1,4 +1,5 @@
 using HireMe.Contracts.Answer.Requests;
+using HireMe.Contracts.Answer.Responses;
 using HireMe.CustomErrors;
 using HireMe.CustomResult;
 using HireMe.Models;
@@ -12,6 +13,7 @@ namespace HireMe.Services
         Task<Result<Answer>> AddAnswerAsync(string employerId, AddAnswerRequest request, CancellationToken cancellationToken = default);
         Task<Result> UpdateAnswerAsync(string employerId, int answerId, UpdateAnswerRequest request, CancellationToken cancellationToken = default);
         Task<Result> DeleteAnswerAsync(string employerId, int answerId, CancellationToken cancellationToken = default);
+        Task<Result<AnswerSummaryResponse>> GetAnswerByQuestionIdAsync(int questionId, CancellationToken cancellationToken = default);
     }
 
     public class AnswerService : IAnswerService
@@ -125,6 +127,32 @@ namespace HireMe.Services
 
             _logger.LogInformation("Answer deleted successfully with ID: {AnswerId}", answer.Id);
             return Result.Success();
+        }
+
+        public async Task<Result<AnswerSummaryResponse>> GetAnswerByQuestionIdAsync(int questionId, CancellationToken cancellationToken = default)
+        {
+            _logger.LogInformation("Retrieving answer for question ID: {QuestionId}", questionId);
+
+            var answer = await _context.Answers
+                .Where(a => a.QuestionId == questionId)
+                .Select(a => new AnswerSummaryResponse
+                {
+                    Id = a.Id,
+                    Text = a.AnswerText,
+                    QuestionId = a.QuestionId,
+                    CreatedAt = a.CreatedAt,
+                    IsUpdated = a.UpdatedAt != null
+                })
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (answer is null)
+            {
+                _logger.LogWarning("Answer not found for question ID: {QuestionId}", questionId);
+                return Result.Failure<AnswerSummaryResponse>(AnswerErrors.AnswerNotFound);
+            }
+
+            _logger.LogInformation("Successfully retrieved answer for question ID: {QuestionId}", questionId);
+            return Result.Success(answer);
         }
     }
 }

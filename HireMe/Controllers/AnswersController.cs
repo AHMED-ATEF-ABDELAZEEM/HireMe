@@ -44,5 +44,13 @@ namespace HireMe.Controllers
 
             return result.IsSuccess ? NoContent() : BadRequest(result.Error);
         }
+
+        [HttpGet("questions/{questionId}/answer")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetAnswerByQuestionId([FromRoute] int questionId, CancellationToken cancellationToken)
+        {
+            var result = await _answerService.GetAnswerByQuestionIdAsync(questionId, cancellationToken);
+            return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+        }
     }
 }
