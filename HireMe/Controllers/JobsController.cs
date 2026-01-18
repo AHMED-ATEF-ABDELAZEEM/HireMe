@@ -53,6 +53,14 @@ namespace HireMe.Controllers
             return result.IsSuccess ? NoContent() : BadRequest(result.Error);
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetAllJobs(CancellationToken cancellationToken)
+        {
+            var result = await _jobService.GetAllJobsAsync(cancellationToken);
+            return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+        }
+
         
     }
 }

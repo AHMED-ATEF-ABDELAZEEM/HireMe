@@ -18,6 +18,7 @@ namespace HireMe.Services
         Task<Result<JobResponse>> GetJobByIdAsync(int jobId, CancellationToken cancellationToken = default);
         Task<Result<IEnumerable<string>>> GetWorkDaysAtJobInArabicAsync(int jobId, CancellationToken cancellationToken = default);
         Task<Result> CloseJobAsync(int jobId, CancellationToken cancellationToken = default);
+        Task<Result<IEnumerable<JobSummaryResponse>>> GetAllJobsAsync(CancellationToken cancellationToken = default);
     }
 
     public class JobService : IJobService
@@ -155,6 +156,28 @@ namespace HireMe.Services
 
             _logger.LogInformation("Successfully closed job with ID: {JobId}", jobId);
             return Result.Success();
+        }
+
+        public async Task<Result<IEnumerable<JobSummaryResponse>>> GetAllJobsAsync(CancellationToken cancellationToken = default)
+        {
+            _logger.LogInformation("Retrieving all jobs");
+
+            var jobs = await _context.Jobs
+                .Select(j => new JobSummaryResponse
+                {
+                    Id = j.Id,
+                    JobTitle = j.JobTitle,
+                    Salary = j.Salary,
+                    GovernorateName = j.Governorate.NameArabic,
+                    NumberOfQuestions = j.Questions != null ? j.Questions.Count : 0,
+                    NumberOfApplications = j.Applications != null ? j.Applications.Count : 0,
+                    WorkingHoursPerDay = j.WorkingHoursPerDay,
+                    WorkingDaysPerWeek = j.WorkingDaysPerWeek
+                })
+                .ToListAsync(cancellationToken);
+
+            _logger.LogInformation("Successfully retrieved {JobCount} jobs", jobs.Count);
+            return Result.Success<IEnumerable<JobSummaryResponse>>(jobs);
         }
     }
 }
