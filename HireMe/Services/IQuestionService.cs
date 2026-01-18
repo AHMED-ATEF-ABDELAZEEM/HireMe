@@ -1,4 +1,5 @@
 using HireMe.Contracts.Question.Requests;
+using HireMe.Contracts.Question.Responses;
 using HireMe.CustomErrors;
 using HireMe.CustomResult;
 using HireMe.Enums;
@@ -13,6 +14,7 @@ namespace HireMe.Services
         Task<Result<Question>> AddQuestionAsync(string WorkerId, AddQuestionRequest request, CancellationToken cancellationToken = default);
         Task<Result> UpdateQuestionAsync(string workerId, int questionId, UpdateQuestionRequest request, CancellationToken cancellationToken = default);
         Task<Result> DeleteQuestionAsync(string workerId, int questionId, CancellationToken cancellationToken = default);
+        Task<Result<IEnumerable<QuestionSummaryResponse>>> GetAllQuestionsAsync(CancellationToken cancellationToken = default);
     }
 
     public class QuestionService : IQuestionService
@@ -127,6 +129,26 @@ namespace HireMe.Services
 
             _logger.LogInformation("Question deleted successfully with ID: {QuestionId}", question.Id);
             return Result.Success();
+        }
+
+        public async Task<Result<IEnumerable<QuestionSummaryResponse>>> GetAllQuestionsAsync(CancellationToken cancellationToken = default)
+        {
+            _logger.LogInformation("Retrieving all questions");
+
+            var questions = await _context.Questions
+                .Where(q => !q.IsDeleted)
+                .Select(q => new QuestionSummaryResponse
+                {
+                    Id = q.Id,
+                    Text = q.QuestionText,
+                    HasAnswer = q.Answer != null,
+                    CreatedAt = q.CreatedAt,
+                    IsUpdated = q.UpdatedAt != null
+                })
+                .ToListAsync(cancellationToken);
+
+            _logger.LogInformation("Successfully retrieved {QuestionCount} questions", questions.Count);
+            return Result.Success<IEnumerable<QuestionSummaryResponse>>(questions);
         }
     }
 }
