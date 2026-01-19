@@ -125,7 +125,10 @@
         "tags": [
           "Answers"
         ],
+        "summary": "Adds a new answer to a question by the employer.",
+        "description": "This endpoint allows employers to answer questions on their job postings.\r\nOnly the employer who owns the job can answer questions.\r\nThe employer ID is automatically extracted from the authenticated user's token.\r\nQuestions can only be answered once.",
         "requestBody": {
+          "description": "The answer details including question ID and answer text.",
           "content": {
             "application/json": {
               "schema": {
@@ -146,7 +149,13 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Answer added successfully."
+          },
+          "400": {
+            "description": "Invalid request or business rule violation (e.g., QuestionNotFound, JobNotFound, UnauthorizedAnswerCreation, QuestionAlreadyAnswered)."
+          },
+          "401": {
+            "description": "User is not authenticated."
           }
         }
       }
@@ -156,10 +165,13 @@
         "tags": [
           "Answers"
         ],
+        "summary": "Updates an existing answer.",
+        "description": "Only the employer who created the answer can update it.\r\nThe answer must exist and belong to the authenticated employer.",
         "parameters": [
           {
             "name": "answerId",
             "in": "path",
+            "description": "The ID of the answer to update.",
             "required": true,
             "schema": {
               "type": "integer",
@@ -168,6 +180,7 @@
           }
         ],
         "requestBody": {
+          "description": "The updated answer text.",
           "content": {
             "application/json": {
               "schema": {
@@ -189,6 +202,15 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "204": {
+            "description": "Answer updated successfully."
+          },
+          "400": {
+            "description": "Invalid request or business rule violation (e.g., AnswerNotFound, UnauthorizedAnswerUpdate)."
+          },
+          "401": {
+            "description": "User is not authenticated."
           }
         }
       },
@@ -196,10 +218,13 @@
         "tags": [
           "Answers"
         ],
+        "summary": "Deletes an answer.",
+        "description": "Only the employer who created the answer can delete it.\r\nThe answer must exist and belong to the authenticated employer.\r\nThis is a soft delete operation, maintaining data integrity.",
         "parameters": [
           {
             "name": "answerId",
             "in": "path",
+            "description": "The ID of the answer to delete.",
             "required": true,
             "schema": {
               "type": "integer",
@@ -210,6 +235,15 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "204": {
+            "description": "Answer deleted successfully."
+          },
+          "400": {
+            "description": "Invalid request or business rule violation (e.g., AnswerNotFound, UnauthorizedAnswerDelete)."
+          },
+          "401": {
+            "description": "User is not authenticated."
           }
         }
       }
@@ -219,10 +253,13 @@
         "tags": [
           "Answers"
         ],
+        "summary": "Retrieves the answer for a specific question.",
+        "description": "This endpoint is publicly accessible (no authentication required).\r\nReturns the answer provided by the employer for the specified question.\r\nUseful for workers and visitors to see answered questions on job postings.",
         "parameters": [
           {
             "name": "questionId",
             "in": "path",
+            "description": "The ID of the question to get the answer for.",
             "required": true,
             "schema": {
               "type": "integer",
@@ -232,7 +269,10 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Answer retrieved successfully."
+          },
+          "400": {
+            "description": "Invalid request or AnswerNotFound."
           }
         }
       }
@@ -242,7 +282,10 @@
         "tags": [
           "Applications"
         ],
+        "summary": "Submits a new application to a job posting from a worker.",
+        "description": "This endpoint allows workers to apply for job postings.\r\nThe worker ID is automatically extracted from the authenticated user's token.\r\nWorkers can only apply once to each job.\r\nJobs must be in Published status to accept applications.\r\nThe application includes a message from the worker to the employer.",
         "requestBody": {
+          "description": "The application details including job ID and message.",
           "content": {
             "application/json": {
               "schema": {
@@ -263,7 +306,16 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Application submitted successfully."
+          },
+          "400": {
+            "description": "Invalid request or business rule violation (e.g., JobNotFound, JobNotAcceptingApplications, AlreadyApplied)."
+          },
+          "401": {
+            "description": "User is not authenticated."
+          },
+          "403": {
+            "description": "User is not authorized (not a worker)."
           }
         }
       }
@@ -273,10 +325,13 @@
         "tags": [
           "Applications"
         ],
+        "summary": "Updates an existing application message.",
+        "description": "Only the worker who submitted the application can update it.\r\nThe application must be in Applied status (not yet processed by employer).\r\nCannot update applications that have been accepted, rejected, or withdrawn.",
         "parameters": [
           {
             "name": "applicationId",
             "in": "path",
+            "description": "The ID of the application to update.",
             "required": true,
             "schema": {
               "type": "integer",
@@ -285,6 +340,7 @@
           }
         ],
         "requestBody": {
+          "description": "The updated application message.",
           "content": {
             "application/json": {
               "schema": {
@@ -306,6 +362,18 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "204": {
+            "description": "Application updated successfully."
+          },
+          "400": {
+            "description": "Invalid request or business rule violation (e.g., ApplicationNotFound, UnauthorizedApplicationUpdate, CannotUpdateApplication)."
+          },
+          "401": {
+            "description": "User is not authenticated."
+          },
+          "403": {
+            "description": "User is not authorized (not a worker)."
           }
         }
       }
@@ -315,10 +383,13 @@
         "tags": [
           "Applications"
         ],
+        "summary": "Accepts a worker's application and creates a job connection.",
+        "description": "Only the employer who owns the job can accept applications.\r\nThe application must be in Applied status.\r\nCreates a JobConnection with 10-day interaction period.\r\nAutomatically rejects other applications for the same job.\r\nUpdates the job status to InProgress.\r\nWorker cannot have another active job connection.",
         "parameters": [
           {
             "name": "applicationId",
             "in": "path",
+            "description": "The ID of the application to accept.",
             "required": true,
             "schema": {
               "type": "integer",
@@ -329,6 +400,18 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "204": {
+            "description": "Application accepted successfully and job connection created."
+          },
+          "400": {
+            "description": "Invalid request or business rule violation (e.g., ApplicationNotFound, JobNotOwnedByEmployer, JobNotAcceptingApplications, InvalidApplicationStatus, WorkerHasActiveConnection)."
+          },
+          "401": {
+            "description": "User is not authenticated."
+          },
+          "403": {
+            "description": "User is not authorized (not an employer)."
           }
         }
       }
@@ -338,10 +421,13 @@
         "tags": [
           "Applications"
         ],
+        "summary": "Rejects a worker's application.",
+        "description": "Only the employer who owns the job can reject applications.\r\nThe application must be in Applied status.\r\nOnce rejected, the application cannot be updated by the worker.",
         "parameters": [
           {
             "name": "applicationId",
             "in": "path",
+            "description": "The ID of the application to reject.",
             "required": true,
             "schema": {
               "type": "integer",
@@ -352,6 +438,18 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "204": {
+            "description": "Application rejected successfully."
+          },
+          "400": {
+            "description": "Invalid request or business rule violation (e.g., ApplicationNotFound, InvalidApplicationStatus, JobNotOwnedByEmployer)."
+          },
+          "401": {
+            "description": "User is not authenticated."
+          },
+          "403": {
+            "description": "User is not authorized (not an employer)."
           }
         }
       }
@@ -361,10 +459,13 @@
         "tags": [
           "Applications"
         ],
+        "summary": "Withdraws a worker's application.",
+        "description": "Only the worker who submitted the application can withdraw it.\r\nThe application must be in Applied status (not yet processed by employer).\r\nCannot withdraw applications that have been accepted or rejected.\r\nOnce withdrawn, the application cannot be reactivated.",
         "parameters": [
           {
             "name": "applicationId",
             "in": "path",
+            "description": "The ID of the application to withdraw.",
             "required": true,
             "schema": {
               "type": "integer",
@@ -375,6 +476,53 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "204": {
+            "description": "Application withdrawn successfully."
+          },
+          "400": {
+            "description": "Invalid request or business rule violation (e.g., ApplicationNotFound, UnauthorizedApplicationUpdate, CannotUpdateApplication)."
+          },
+          "401": {
+            "description": "User is not authenticated."
+          },
+          "403": {
+            "description": "User is not authorized (not a worker)."
+          }
+        }
+      }
+    },
+    "/Applications/job/{jobId}/applied": {
+      "get": {
+        "tags": [
+          "Applications"
+        ],
+        "summary": "Retrieves all applied applications for a specific job.",
+        "description": "Only the employer who owns the job can view applications.\r\nReturns only applications with Applied status (pending employer response).\r\nEach application includes worker details (full name, profile image) and application information (message, created date, update status).\r\nApplications with Withdrawn, Rejected, Accepted, or other statuses are not included.",
+        "parameters": [
+          {
+            "name": "jobId",
+            "in": "path",
+            "description": "The ID of the job to get applications for.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Applications retrieved successfully with worker information."
+          },
+          "400": {
+            "description": "Invalid request or business rule violation (e.g., JobNotFound, JobNotOwnedByEmployer)."
+          },
+          "401": {
+            "description": "User is not authenticated."
+          },
+          "403": {
+            "description": "User is not authorized (not an employer)."
           }
         }
       }
@@ -678,6 +826,72 @@
         }
       }
     },
+    "/JobConnections/{jobConnectionId}/cancel": {
+      "put": {
+        "tags": [
+          "JobConnections"
+        ],
+        "summary": "Cancels an active job connection",
+        "description": "This endpoint allows either the worker or employer to cancel an active job connection.\r\nThe user type is determined from the authentication token.\r\nOnly the worker or employer associated with the connection can cancel it.\r\n\r\nSample request:\r\n\r\n    PUT /JobConnections/5/cancel",
+        "parameters": [
+          {
+            "name": "jobConnectionId",
+            "in": "path",
+            "description": "The unique identifier of the job connection to cancel",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Job connection cancelled successfully"
+          },
+          "400": {
+            "description": "Bad request - Possible errors:\r\n            - JobConnectionNotFound: The specified job connection does not exist\r\n            - JobConnectionNotActive: The connection is not in Active status\r\n            - UnauthorizedCancellation: User is not the worker or employer of this connection",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - User must be authenticated",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/Jobs": {
       "post": {
         "tags": [
@@ -767,10 +981,13 @@
         "tags": [
           "Jobs"
         ],
+        "summary": "Retrieves detailed information about a specific job",
+        "description": "This endpoint returns comprehensive details about a job posting identified by its ID.\r\nNo authentication is required to access this endpoint.\r\n\r\nSample request:\r\n\r\n    GET /Jobs/5",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "The unique identifier of the job",
             "required": true,
             "schema": {
               "type": "integer",
@@ -780,7 +997,17 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Returns the job details"
+          },
+          "400": {
+            "description": "Bad request - Possible errors:\r\n            - JobNotFound: The specified job ID does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -790,10 +1017,13 @@
         "tags": [
           "Jobs"
         ],
+        "summary": "Retrieves the working days of a job in Arabic",
+        "description": "This endpoint returns the working days for a specific job translated into Arabic.\r\nNo authentication is required to access this endpoint.\r\n\r\nSample request:\r\n\r\n    GET /Jobs/5/days\r\n    \r\nSample response:\r\n\r\n    [\"السبت\", \"الأحد\", \"الاثنين\", \"الثلاثاء\", \"الأربعاء\"]",
         "parameters": [
           {
             "name": "Id",
             "in": "path",
+            "description": "The unique identifier of the job",
             "required": true,
             "schema": {
               "type": "integer",
@@ -803,7 +1033,27 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Returns the list of working days in Arabic",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Possible errors:\r\n            - JobNotFound: The specified job ID does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -813,10 +1063,13 @@
         "tags": [
           "Jobs"
         ],
+        "summary": "Closes a job posting",
+        "description": "This endpoint closes an active job posting, preventing further applications.\r\nThe job status will be updated to closed.\r\n\r\nSample request:\r\n\r\n    PUT /Jobs/5/close",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "The unique identifier of the job to close",
             "required": true,
             "schema": {
               "type": "integer",
@@ -825,8 +1078,28 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "Job closed successfully"
+          },
+          "400": {
+            "description": "Bad request - Possible errors:\r\n            - JobNotFound: The specified job ID does not exist\r\n            - JobAlreadyClosed: The job is already closed",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -836,7 +1109,10 @@
         "tags": [
           "Questions"
         ],
+        "summary": "Adds a new question to a job from a worker.",
+        "description": "This endpoint allows workers to ask questions about a specific job posting.\r\nThe worker ID is automatically extracted from the authenticated user's token.\r\nWorkers can ask multiple questions on the same job.",
         "requestBody": {
+          "description": "The question details including job ID and question content.",
           "content": {
             "application/json": {
               "schema": {
@@ -857,7 +1133,16 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Question added successfully."
+          },
+          "400": {
+            "description": "Invalid request or business rule violation (e.g., JobNotFound, JobNotAcceptingQuestions)."
+          },
+          "401": {
+            "description": "User is not authenticated."
+          },
+          "403": {
+            "description": "User is not authorized (not a worker)."
           }
         }
       }
@@ -867,10 +1152,13 @@
         "tags": [
           "Questions"
         ],
+        "summary": "Updates an existing question content.",
+        "description": "Only the worker who created the question can update it.\r\nThe question must exist and belong to the authenticated worker.\r\nCannot update questions that have already been answered by the employer.",
         "parameters": [
           {
             "name": "questionId",
             "in": "path",
+            "description": "The ID of the question to update.",
             "required": true,
             "schema": {
               "type": "integer",
@@ -879,6 +1167,7 @@
           }
         ],
         "requestBody": {
+          "description": "The updated question content.",
           "content": {
             "application/json": {
               "schema": {
@@ -900,6 +1189,18 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "204": {
+            "description": "Question updated successfully."
+          },
+          "400": {
+            "description": "Invalid request or business rule violation (e.g., QuestionNotFound, UnauthorizedQuestionUpdate, QuestionAlreadyAnswered)."
+          },
+          "401": {
+            "description": "User is not authenticated."
+          },
+          "403": {
+            "description": "User is not authorized (not a worker)."
           }
         }
       },
@@ -907,10 +1208,13 @@
         "tags": [
           "Questions"
         ],
+        "summary": "Deletes a question.",
+        "description": "Only the worker who created the question can delete it.\r\nThe question must exist and belong to the authenticated worker.\r\nThis is a soft delete operation, maintaining data integrity.\r\nCannot delete questions that have already been answered by the employer.",
         "parameters": [
           {
             "name": "questionId",
             "in": "path",
+            "description": "The ID of the question to delete.",
             "required": true,
             "schema": {
               "type": "integer",
@@ -921,6 +1225,18 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "204": {
+            "description": "Question deleted successfully."
+          },
+          "400": {
+            "description": "Invalid request or business rule violation (e.g., QuestionNotFound, UnauthorizedQuestionUpdate, QuestionAlreadyAnswered)."
+          },
+          "401": {
+            "description": "User is not authenticated."
+          },
+          "403": {
+            "description": "User is not authorized (not a worker)."
           }
         }
       }
@@ -930,10 +1246,13 @@
         "tags": [
           "Questions"
         ],
+        "summary": "Retrieves all questions for a specific job.",
+        "description": "This endpoint is publicly accessible (no authentication required).\r\nReturns all questions asked by workers on the specified job along with employer answers if provided.\r\nUseful for workers to see what questions have been asked before submitting their own.\r\nOnly returns non-deleted questions.",
         "parameters": [
           {
             "name": "jobId",
             "in": "path",
+            "description": "The ID of the job to get questions for.",
             "required": true,
             "schema": {
               "type": "integer",
@@ -943,7 +1262,10 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Questions retrieved successfully. Returns a list of questions with answers."
+          },
+          "400": {
+            "description": "Invalid request or JobNotFound."
           }
         }
       }
@@ -1262,6 +1584,9 @@
     },
     {
       "name": "Governorates"
+    },
+    {
+      "name": "JobConnections"
     },
     {
       "name": "Jobs"

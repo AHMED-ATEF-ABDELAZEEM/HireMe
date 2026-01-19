@@ -4,6 +4,204 @@
         <name>HireMe</name>
     </assembly>
     <members>
+        <member name="M:HireMe.Controllers.AnswersController.AddAnswer(HireMe.Contracts.Answer.Requests.AddAnswerRequest,System.Threading.CancellationToken)">
+            <summary>
+            Adds a new answer to a question by the employer.
+            </summary>
+            <param name="request">The answer details including question ID and answer text.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>Returns 200 OK if the answer is added successfully.</returns>
+            <remarks>
+            This endpoint allows employers to answer questions on their job postings.
+            Only the employer who owns the job can answer questions.
+            The employer ID is automatically extracted from the authenticated user's token.
+            Questions can only be answered once.
+            </remarks>
+            <response code="200">Answer added successfully.</response>
+            <response code="400">Invalid request or business rule violation (e.g., QuestionNotFound, JobNotFound, UnauthorizedAnswerCreation, QuestionAlreadyAnswered).</response>
+            <response code="401">User is not authenticated.</response>
+        </member>
+        <member name="M:HireMe.Controllers.AnswersController.UpdateAnswer(System.Int32,HireMe.Contracts.Answer.Requests.UpdateAnswerRequest,System.Threading.CancellationToken)">
+            <summary>
+            Updates an existing answer.
+            </summary>
+            <param name="answerId">The ID of the answer to update.</param>
+            <param name="request">The updated answer text.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>Returns 204 No Content if the answer is updated successfully.</returns>
+            <remarks>
+            Only the employer who created the answer can update it.
+            The answer must exist and belong to the authenticated employer.
+            </remarks>
+            <response code="204">Answer updated successfully.</response>
+            <response code="400">Invalid request or business rule violation (e.g., AnswerNotFound, UnauthorizedAnswerUpdate).</response>
+            <response code="401">User is not authenticated.</response>
+        </member>
+        <member name="M:HireMe.Controllers.AnswersController.DeleteAnswer(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Deletes an answer.
+            </summary>
+            <param name="answerId">The ID of the answer to delete.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>Returns 204 No Content if the answer is deleted successfully.</returns>
+            <remarks>
+            Only the employer who created the answer can delete it.
+            The answer must exist and belong to the authenticated employer.
+            This is a soft delete operation, maintaining data integrity.
+            </remarks>
+            <response code="204">Answer deleted successfully.</response>
+            <response code="400">Invalid request or business rule violation (e.g., AnswerNotFound, UnauthorizedAnswerDelete).</response>
+            <response code="401">User is not authenticated.</response>
+        </member>
+        <member name="M:HireMe.Controllers.AnswersController.GetAnswerByQuestionId(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Retrieves the answer for a specific question.
+            </summary>
+            <param name="questionId">The ID of the question to get the answer for.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>Returns 200 OK with the answer details if it exists.</returns>
+            <remarks>
+            This endpoint is publicly accessible (no authentication required).
+            Returns the answer provided by the employer for the specified question.
+            Useful for workers and visitors to see answered questions on job postings.
+            </remarks>
+            <response code="200">Answer retrieved successfully.</response>
+            <response code="400">Invalid request or AnswerNotFound.</response>
+        </member>
+        <member name="M:HireMe.Controllers.ApplicationsController.AddApplication(HireMe.Contracts.Application.Requests.AddApplicationRequest,System.Threading.CancellationToken)">
+            <summary>
+            Submits a new application to a job posting from a worker.
+            </summary>
+            <param name="request">The application details including job ID and message.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>Returns 200 OK if the application is submitted successfully.</returns>
+            <remarks>
+            This endpoint allows workers to apply for job postings.
+            The worker ID is automatically extracted from the authenticated user's token.
+            Workers can only apply once to each job.
+            Jobs must be in Published status to accept applications.
+            The application includes a message from the worker to the employer.
+            </remarks>
+            <response code="200">Application submitted successfully.</response>
+            <response code="400">Invalid request or business rule violation (e.g., JobNotFound, JobNotAcceptingApplications, AlreadyApplied).</response>
+            <response code="401">User is not authenticated.</response>
+            <response code="403">User is not authorized (not a worker).</response>
+        </member>
+        <member name="M:HireMe.Controllers.ApplicationsController.UpdateApplication(System.Int32,HireMe.Contracts.Application.Requests.UpdateApplicationRequest,System.Threading.CancellationToken)">
+            <summary>
+            Updates an existing application message.
+            </summary>
+            <param name="applicationId">The ID of the application to update.</param>
+            <param name="request">The updated application message.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>Returns 204 No Content if the application is updated successfully.</returns>
+            <remarks>
+            Only the worker who submitted the application can update it.
+            The application must be in Applied status (not yet processed by employer).
+            Cannot update applications that have been accepted, rejected, or withdrawn.
+            </remarks>
+            <response code="204">Application updated successfully.</response>
+            <response code="400">Invalid request or business rule violation (e.g., ApplicationNotFound, UnauthorizedApplicationUpdate, CannotUpdateApplication).</response>
+            <response code="401">User is not authenticated.</response>
+            <response code="403">User is not authorized (not a worker).</response>
+        </member>
+        <member name="M:HireMe.Controllers.ApplicationsController.AcceptApplication(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Accepts a worker's application and creates a job connection.
+            </summary>
+            <param name="applicationId">The ID of the application to accept.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>Returns 204 No Content if the application is accepted successfully.</returns>
+            <remarks>
+            Only the employer who owns the job can accept applications.
+            The application must be in Applied status.
+            Creates a JobConnection with 10-day interaction period.
+            Automatically rejects other applications for the same job.
+            Updates the job status to InProgress.
+            Worker cannot have another active job connection.
+            </remarks>
+            <response code="204">Application accepted successfully and job connection created.</response>
+            <response code="400">Invalid request or business rule violation (e.g., ApplicationNotFound, JobNotOwnedByEmployer, JobNotAcceptingApplications, InvalidApplicationStatus, WorkerHasActiveConnection).</response>
+            <response code="401">User is not authenticated.</response>
+            <response code="403">User is not authorized (not an employer).</response>
+        </member>
+        <member name="M:HireMe.Controllers.ApplicationsController.RejectApplication(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Rejects a worker's application.
+            </summary>
+            <param name="applicationId">The ID of the application to reject.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>Returns 204 No Content if the application is rejected successfully.</returns>
+            <remarks>
+            Only the employer who owns the job can reject applications.
+            The application must be in Applied status.
+            Once rejected, the application cannot be updated by the worker.
+            </remarks>
+            <response code="204">Application rejected successfully.</response>
+            <response code="400">Invalid request or business rule violation (e.g., ApplicationNotFound, InvalidApplicationStatus, JobNotOwnedByEmployer).</response>
+            <response code="401">User is not authenticated.</response>
+            <response code="403">User is not authorized (not an employer).</response>
+        </member>
+        <member name="M:HireMe.Controllers.ApplicationsController.WithdrawApplication(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Withdraws a worker's application.
+            </summary>
+            <param name="applicationId">The ID of the application to withdraw.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>Returns 204 No Content if the application is withdrawn successfully.</returns>
+            <remarks>
+            Only the worker who submitted the application can withdraw it.
+            The application must be in Applied status (not yet processed by employer).
+            Cannot withdraw applications that have been accepted or rejected.
+            Once withdrawn, the application cannot be reactivated.
+            </remarks>
+            <response code="204">Application withdrawn successfully.</response>
+            <response code="400">Invalid request or business rule violation (e.g., ApplicationNotFound, UnauthorizedApplicationUpdate, CannotUpdateApplication).</response>
+            <response code="401">User is not authenticated.</response>
+            <response code="403">User is not authorized (not a worker).</response>
+        </member>
+        <member name="M:HireMe.Controllers.ApplicationsController.GetAppliedApplicationsByJobId(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Retrieves all applied applications for a specific job.
+            </summary>
+            <param name="jobId">The ID of the job to get applications for.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>Returns 200 OK with a list of applied applications including worker information.</returns>
+            <remarks>
+            Only the employer who owns the job can view applications.
+            Returns only applications with Applied status (pending employer response).
+            Each application includes worker details (full name, profile image) and application information (message, created date, update status).
+            Applications with Withdrawn, Rejected, Accepted, or other statuses are not included.
+            </remarks>
+            <response code="200">Applications retrieved successfully with worker information.</response>
+            <response code="400">Invalid request or business rule violation (e.g., JobNotFound, JobNotOwnedByEmployer).</response>
+            <response code="401">User is not authenticated.</response>
+            <response code="403">User is not authorized (not an employer).</response>
+        </member>
+        <member name="M:HireMe.Controllers.JobConnectionsController.CancelJobConnection(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Cancels an active job connection
+            </summary>
+            <remarks>
+            This endpoint allows either the worker or employer to cancel an active job connection.
+            The user type is determined from the authentication token.
+            Only the worker or employer associated with the connection can cancel it.
+            
+            Sample request:
+            
+                PUT /JobConnections/5/cancel
+                
+            </remarks>
+            <param name="jobConnectionId">The unique identifier of the job connection to cancel</param>
+            <param name="cancellationToken">Cancellation token</param>
+            <response code="204">Job connection cancelled successfully</response>
+            <response code="400">Bad request - Possible errors:
+            - JobConnectionNotFound: The specified job connection does not exist
+            - JobConnectionNotActive: The connection is not in Active status
+            - UnauthorizedCancellation: User is not the worker or employer of this connection
+            </response>
+            <response code="401">Unauthorized - User must be authenticated</response>
+        </member>
         <member name="M:HireMe.Controllers.JobsController.CreateJob(HireMe.Contracts.Job.Requests.JobRequest,System.Threading.CancellationToken)">
             <summary>
             Creates a new job posting
@@ -44,6 +242,70 @@
             <response code="401">Unauthorized - User must be authenticated</response>
             
         </member>
+        <member name="M:HireMe.Controllers.JobsController.GetJobById(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Retrieves detailed information about a specific job
+            </summary>
+            <remarks>
+            This endpoint returns comprehensive details about a job posting identified by its ID.
+            No authentication is required to access this endpoint.
+            
+            Sample request:
+            
+                GET /Jobs/5
+                
+            </remarks>
+            <param name="id">The unique identifier of the job</param>
+            <param name="cancellationToken">Cancellation token</param>
+            <response code="200">Returns the job details</response>
+            <response code="400">Bad request - Possible errors:
+            - JobNotFound: The specified job ID does not exist
+            </response>
+        </member>
+        <member name="M:HireMe.Controllers.JobsController.GetWorkDaysInArabic(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Retrieves the working days of a job in Arabic
+            </summary>
+            <remarks>
+            This endpoint returns the working days for a specific job translated into Arabic.
+            No authentication is required to access this endpoint.
+            
+            Sample request:
+            
+                GET /Jobs/5/days
+                
+            Sample response:
+            
+                ["السبت", "الأحد", "الاثنين", "الثلاثاء", "الأربعاء"]
+            </remarks>
+            <param name="Id">The unique identifier of the job</param>
+            <param name="cancellationToken">Cancellation token</param>
+            <response code="200">Returns the list of working days in Arabic</response>
+            <response code="400">Bad request - Possible errors:
+            - JobNotFound: The specified job ID does not exist
+            </response>
+        </member>
+        <member name="M:HireMe.Controllers.JobsController.CloseJob(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Closes a job posting
+            </summary>
+            <remarks>
+            This endpoint closes an active job posting, preventing further applications.
+            The job status will be updated to closed.
+            
+            Sample request:
+            
+                PUT /Jobs/5/close
+                
+            </remarks>
+            <param name="id">The unique identifier of the job to close</param>
+            <param name="cancellationToken">Cancellation token</param>
+            <response code="204">Job closed successfully</response>
+            <response code="400">Bad request - Possible errors:
+            - JobNotFound: The specified job ID does not exist
+            - JobAlreadyClosed: The job is already closed
+            </response>
+        </member>
         <member name="M:HireMe.Controllers.JobsController.GetAllJobs(System.Threading.CancellationToken)">
             <summary>
             Retrieves all job postings
@@ -73,6 +335,75 @@
             <param name="cancellationToken">Cancellation token</param>
             <response code="200">Returns the list of all jobs</response>
             <response code="400">Bad request - Unexpected error occurred</response>
+        </member>
+        <member name="M:HireMe.Controllers.QuestionsController.AddQuestion(HireMe.Contracts.Question.Requests.AddQuestionRequest,System.Threading.CancellationToken)">
+            <summary>
+            Adds a new question to a job from a worker.
+            </summary>
+            <param name="request">The question details including job ID and question content.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>Returns 200 OK if the question is added successfully.</returns>
+            <remarks>
+            This endpoint allows workers to ask questions about a specific job posting.
+            The worker ID is automatically extracted from the authenticated user's token.
+            Workers can ask multiple questions on the same job.
+            </remarks>
+            <response code="200">Question added successfully.</response>
+            <response code="400">Invalid request or business rule violation (e.g., JobNotFound, JobNotAcceptingQuestions).</response>
+            <response code="401">User is not authenticated.</response>
+            <response code="403">User is not authorized (not a worker).</response>
+        </member>
+        <member name="M:HireMe.Controllers.QuestionsController.UpdateQuestion(System.Int32,HireMe.Contracts.Question.Requests.UpdateQuestionRequest,System.Threading.CancellationToken)">
+            <summary>
+            Updates an existing question content.
+            </summary>
+            <param name="questionId">The ID of the question to update.</param>
+            <param name="request">The updated question content.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>Returns 204 No Content if the question is updated successfully.</returns>
+            <remarks>
+            Only the worker who created the question can update it.
+            The question must exist and belong to the authenticated worker.
+            Cannot update questions that have already been answered by the employer.
+            </remarks>
+            <response code="204">Question updated successfully.</response>
+            <response code="400">Invalid request or business rule violation (e.g., QuestionNotFound, UnauthorizedQuestionUpdate, QuestionAlreadyAnswered).</response>
+            <response code="401">User is not authenticated.</response>
+            <response code="403">User is not authorized (not a worker).</response>
+        </member>
+        <member name="M:HireMe.Controllers.QuestionsController.DeleteQuestion(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Deletes a question.
+            </summary>
+            <param name="questionId">The ID of the question to delete.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>Returns 204 No Content if the question is deleted successfully.</returns>
+            <remarks>
+            Only the worker who created the question can delete it.
+            The question must exist and belong to the authenticated worker.
+            This is a soft delete operation, maintaining data integrity.
+            Cannot delete questions that have already been answered by the employer.
+            </remarks>
+            <response code="204">Question deleted successfully.</response>
+            <response code="400">Invalid request or business rule violation (e.g., QuestionNotFound, UnauthorizedQuestionUpdate, QuestionAlreadyAnswered).</response>
+            <response code="401">User is not authenticated.</response>
+            <response code="403">User is not authorized (not a worker).</response>
+        </member>
+        <member name="M:HireMe.Controllers.QuestionsController.GetAllQuestions(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Retrieves all questions for a specific job.
+            </summary>
+            <param name="jobId">The ID of the job to get questions for.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>Returns 200 OK with a list of questions and their answers if available.</returns>
+            <remarks>
+            This endpoint is publicly accessible (no authentication required).
+            Returns all questions asked by workers on the specified job along with employer answers if provided.
+            Useful for workers to see what questions have been asked before submitting their own.
+            Only returns non-deleted questions.
+            </remarks>
+            <response code="200">Questions retrieved successfully. Returns a list of questions with answers.</response>
+            <response code="400">Invalid request or JobNotFound.</response>
         </member>
         <member name="T:HireMe.Migrations.InitialMigration">
             <inheritdoc />

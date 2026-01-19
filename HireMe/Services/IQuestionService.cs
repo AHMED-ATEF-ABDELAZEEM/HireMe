@@ -28,6 +28,8 @@ namespace HireMe.Services
             _logger = logger;
         }
 
+        // TODO : send notification to employer when a new question is added
+
         public async Task<Result<Question>> AddQuestionAsync(string WorkerId, AddQuestionRequest request, CancellationToken cancellationToken = default)
         {
             _logger.LogInformation("Starting question creation process for user {UserId} on job {JobId}", WorkerId, request.JobId);

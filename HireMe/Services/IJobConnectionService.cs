@@ -21,7 +21,8 @@ namespace HireMe.Services
             _context = context;
             _logger = logger;
         }
-
+        
+        // TODO : send notification to another user when a job connection is cancelled and tell him that can report if necessary and write a feedback about the other party
         public async Task<Result> CancelJobConnectionAsync(string userId, int jobConnectionId, IEnumerable<string> userRoles, CancellationToken cancellationToken = default)
         {
             // Determine UserType from roles

@@ -101,7 +101,7 @@ namespace HireMe.Controllers
         /// </remarks>
         /// <response code="200">Answer retrieved successfully.</response>
         /// <response code="400">Invalid request or AnswerNotFound.</response>
-        [HttpGet("questions/{questionId}/answer")]
+        [HttpGet("/questions/{questionId}/answer")]
         [AllowAnonymous]
         public async Task<IActionResult> GetAnswerByQuestionId([FromRoute] int questionId, CancellationToken cancellationToken)
         {

@@ -3,15 +3,16 @@
   "WorkspaceRootPath": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dell\\Desktop\\HireMe-v3.apidog.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|d:\\programming\\back end\\learnapi\\projects\\hireme\\hireme\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|solutionrelative:hireme\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|d:\\programming\\back end\\learnapi\\projects\\hireme\\hireme\\controllers\\answerscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|solutionrelative:hireme\\controllers\\answerscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|d:\\programming\\back end\\learnapi\\projects\\hireme\\hireme\\controllers\\questionscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|solutionrelative:hireme\\controllers\\questionscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|d:\\programming\\back end\\learnapi\\projects\\hireme\\hireme\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|solutionrelative:hireme\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8C49859D-9FD6-E689-124B-9DE60E0CB69B}|HireMe\\HireMe.csproj|d:\\programming\\back end\\learnapi\\projects\\hireme\\hireme\\services\\ijobservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -61,17 +62,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "HireMe-v3.apidog.json",
-              "DocumentMoniker": "C:\\Users\\dell\\Desktop\\HireMe-v3.apidog.json",
-              "ToolTip": "C:\\Users\\dell\\Desktop\\HireMe-v3.apidog.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-01-19T10:04:01.251Z",
+              "Title": "AnswersController.cs",
+              "DocumentMoniker": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Controllers\\AnswersController.cs",
+              "RelativeDocumentMoniker": "HireMe\\Controllers\\AnswersController.cs",
+              "ToolTip": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Controllers\\AnswersController.cs",
+              "RelativeToolTip": "HireMe\\Controllers\\AnswersController.cs",
+              "ViewState": "AgIAAFsAAAAAAAAAAAAkwGcAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-19T14:54:57.53Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "QuestionsController.cs",
               "DocumentMoniker": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Controllers\\QuestionsController.cs",
               "RelativeDocumentMoniker": "HireMe\\Controllers\\QuestionsController.cs",
@@ -178,7 +181,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\Programming\\Back End\\LearnAPI\\Projects\\HireMe\\HireMe\\Program.cs",
               "RelativeDocumentMoniker": "HireMe\\Program.cs",
@@ -186,8 +189,7 @@
               "RelativeToolTip": "HireMe\\Program.cs",
               "ViewState": "AgIAACUAAAAAAAAAAAAuwFMAAABDAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-19T16:38:15.525Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-19T16:38:15.525Z"
             },
             {
               "$type": "Document",

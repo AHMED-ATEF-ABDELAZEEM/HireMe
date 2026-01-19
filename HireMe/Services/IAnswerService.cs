@@ -27,6 +27,8 @@ namespace HireMe.Services
             _logger = logger;
         }
 
+
+        // TODO : send notification to worker when their question is answered
         public async Task<Result<Answer>> AddAnswerAsync(string employerId, AddAnswerRequest request, CancellationToken cancellationToken = default)
         {
             _logger.LogInformation("Starting answer creation process for user {EmployerId} on question {QuestionId}", employerId, request.QuestionId);

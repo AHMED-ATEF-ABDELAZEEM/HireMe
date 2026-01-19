@@ -31,7 +31,8 @@ namespace HireMe.Services
             _context = context;
             _logger = logger;
         }
-
+        
+        // TODO : send notification to employer that new application on job is created
         public async Task<Result<Application>> AddApplicationAsync(string workerId, AddApplicationRequest request, CancellationToken cancellationToken = default)
         {
             _logger.LogInformation("Starting application creation process for user {WorkerId} on job {JobId}", workerId, request.JobId);
@@ -111,6 +112,8 @@ namespace HireMe.Services
             return Result.Success();
         }
 
+        // TODO : send notification to worket that application on job is accepted
+        // TODO : Add Background jobs when create JobConnection to complete it if not canceld afetr 10 day
         public async Task<Result> AcceptApplicationAsync(string employerId, int applicationId, CancellationToken cancellationToken = default)
         {
             _logger.LogInformation("Starting application acceptance process for application {ApplicationId} by employer {EmployerId}", applicationId, employerId);
@@ -189,7 +192,8 @@ namespace HireMe.Services
                 applicationId, employerId, jobConnection.Id);
             return Result.Success();
         }
-
+        
+        // TODO : send notification to worker that application on job is rejected
         public async Task<Result> RejectApplicationAsync(string employerId, int applicationId, CancellationToken cancellationToken = default)
         {
             _logger.LogInformation("Starting application rejection process for application {ApplicationId} by employer {EmployerId}", applicationId, employerId);
@@ -263,6 +267,7 @@ namespace HireMe.Services
             return Result.Success();
         }
 
+       // TODO : return with worker information breif about history of jobs feadback,reports,completedjob,canceldjob
         public async Task<Result<IEnumerable<AppliedApplicationResponse>>> GetAppliedApplicationsByJobIdAsync(string employerId, int jobId, CancellationToken cancellationToken = default)
         {
             _logger.LogInformation("Retrieving applied applications for job {JobId} by employer {EmployerId}", jobId, employerId);
