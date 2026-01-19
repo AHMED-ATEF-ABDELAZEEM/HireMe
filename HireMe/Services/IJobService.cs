@@ -20,6 +20,7 @@ namespace HireMe.Services
         Task<Result<JobResponse>> GetJobByIdAsync(int jobId, CancellationToken cancellationToken = default);
         Task<Result<IEnumerable<string>>> GetWorkDaysAtJobInArabicAsync(int jobId, CancellationToken cancellationToken = default);
         Task<Result> CloseJobAsync(int jobId, CancellationToken cancellationToken = default);
+        Task<Result<int>> GetLastJobIdForEmployerAsync(string employerId, CancellationToken cancellationToken = default);
         Task<Result<IEnumerable<JobSummaryResponse>>> GetAllJobsAsync(CancellationToken cancellationToken = default);
     }
 
@@ -186,6 +187,24 @@ namespace HireMe.Services
 
             _logger.LogInformation("Successfully retrieved {JobCount} jobs", jobs.Count);
             return Result.Success<IEnumerable<JobSummaryResponse>>(jobs);
+        }
+        public async Task<Result<int>> GetLastJobIdForEmployerAsync(string employerId, CancellationToken cancellationToken = default)
+        {
+            _logger.LogInformation("Retrieving last job ID for employer {EmployerId}", employerId);
+
+            var lastJob = await _context.Jobs
+                .Where(j => j.EmployerId == employerId)
+                .OrderByDescending(j => j.CreatedAt)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (lastJob is null)
+            {
+                _logger.LogWarning("No jobs found for employer {EmployerId}", employerId);
+                return Result.Failure<int>(JobErrors.NoJobsForEmployer);
+            }
+
+            _logger.LogInformation("Successfully retrieved last job ID {JobId} for employer {EmployerId}", lastJob.Id, employerId);
+            return Result.Success(lastJob.Id);
         }
     }
 }

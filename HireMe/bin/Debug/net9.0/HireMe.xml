@@ -178,6 +178,85 @@
             <response code="401">User is not authenticated.</response>
             <response code="403">User is not authorized (not an employer).</response>
         </member>
+        <member name="M:HireMe.Controllers.EmployerDashboardController.GetLatestJobAnalytics(System.Threading.CancellationToken)">
+            <summary>
+            Get analytics for the employer's most recent job
+            </summary>
+            <remarks>
+            Returns comprehensive analytics for the employer's latest created job including:
+            - Application statistics (total, applied, rejected, withdrawn, accepted at another job)
+            - Number of unanswered questions
+            - Active job connection details with worker information
+            
+            Sample response:
+            
+                {
+                    "jobId": 5,
+                    "numberOfApplications": 15,
+                    "appliedApplications": 8,
+                    "rejectedApplications": 4,
+                    "withdrawnApplications": 2,
+                    "acceptedAtAnotherJobApplications": 1,
+                    "unansweredQuestions": 3,
+                    "activeConnection": {
+                        "jobConnectionId": 12,
+                        "startedAt": "2026-01-15T10:00:00Z",
+                        "endsAt": "2026-01-25T10:00:00Z",
+                        "worker": {
+                            "workerId": "abc123",
+                            "fullName": "Ahmed Mohamed",
+                            "imageProfile": "profile.jpg"
+                        }
+                    }
+                }
+            </remarks>
+            <param name="cancellationToken">Cancellation token.</param>
+            <response code="200">Analytics returned successfully.</response>
+            <response code="400">Invalid request or JobNotFound (employer has no jobs).</response>
+            <response code="401">User is not authenticated.</response>
+            <response code="403">User is not authorized (not an employer).</response>
+        </member>
+        <member name="M:HireMe.Controllers.EmployerDashboardController.GetJobAnalytics(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Get analytics for a specific job
+            </summary>
+            <remarks>
+            Returns comprehensive analytics for a specific job including:
+            - Application statistics (total, applied, rejected, withdrawn, accepted at another job)
+            - Number of unanswered questions
+            - Active job connection details with worker information
+            
+            Only the employer who owns the job can access its analytics.
+            
+            Sample response:
+            
+                {
+                    "jobId": 5,
+                    "numberOfApplications": 15,
+                    "appliedApplications": 8,
+                    "rejectedApplications": 4,
+                    "withdrawnApplications": 2,
+                    "acceptedAtAnotherJobApplications": 1,
+                    "unansweredQuestions": 3,
+                    "activeConnection": {
+                        "jobConnectionId": 12,
+                        "startedAt": "2026-01-15T10:00:00Z",
+                        "endsAt": "2026-01-25T10:00:00Z",
+                        "worker": {
+                            "workerId": "abc123",
+                            "fullName": "Ahmed Mohamed",
+                            "imageProfile": "profile.jpg"
+                        }
+                    }
+                }
+            </remarks>
+            <param name="jobId">The job ID to get analytics for.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <response code="200">Analytics returned successfully.</response>
+            <response code="400">Invalid request or JobNotFound/JobNotOwnedByEmployer.</response>
+            <response code="401">User is not authenticated.</response>
+            <response code="403">User is not authorized (not an employer).</response>
+        </member>
         <member name="M:HireMe.Controllers.JobConnectionsController.CancelJobConnection(System.Int32,System.Threading.CancellationToken)">
             <summary>
             Cancels an active job connection

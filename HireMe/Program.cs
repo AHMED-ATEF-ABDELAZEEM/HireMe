@@ -94,6 +94,7 @@ namespace HireMe
             builder.Services.AddScoped<IApplicationService, ApplicationService>();
             builder.Services.AddScoped<IApplicationStatusBackgroundJob, ApplicationStatusBackgroundJob>();
             builder.Services.AddScoped<IJobConnectionService, JobConnectionService>();
+            builder.Services.AddScoped<IEmployerDashboardService, EmployerDashboardService>();
 
 
             builder.Services.AddScoped<IImageProfileService, ImageProfileService>();
