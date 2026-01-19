@@ -150,5 +150,31 @@ namespace HireMe.Controllers
 
             return result.IsSuccess ? NoContent() : BadRequest(result.Error);
         }
+
+        /// <summary>
+        /// Retrieves all applied applications for a specific job.
+        /// </summary>
+        /// <param name="jobId">The ID of the job to get applications for.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Returns 200 OK with a list of applied applications including worker information.</returns>
+        /// <remarks>
+        /// Only the employer who owns the job can view applications.
+        /// Returns only applications with Applied status (pending employer response).
+        /// Each application includes worker details (full name, profile image) and application information (message, created date, update status).
+        /// Applications with Withdrawn, Rejected, Accepted, or other statuses are not included.
+        /// </remarks>
+        /// <response code="200">Applications retrieved successfully with worker information.</response>
+        /// <response code="400">Invalid request or business rule violation (e.g., JobNotFound, JobNotOwnedByEmployer).</response>
+        /// <response code="401">User is not authenticated.</response>
+        /// <response code="403">User is not authorized (not an employer).</response>
+        [HttpGet("job/{jobId}/applied")]
+        [Authorize(Roles = DefaultRoles.Employer)]
+        public async Task<IActionResult> GetAppliedApplicationsByJobId([FromRoute] int jobId, CancellationToken cancellationToken)
+        {
+            var employerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _applicationService.GetAppliedApplicationsByJobIdAsync(employerId!, jobId, cancellationToken);
+
+            return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+        }
     }
 }

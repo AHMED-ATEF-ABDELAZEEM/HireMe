@@ -1,4 +1,5 @@
 using HireMe.Contracts.Application.Requests;
+using HireMe.Contracts.Application.Responses;
 using HireMe.CustomErrors;
 using HireMe.CustomResult;
 using HireMe.Enums;
@@ -17,6 +18,7 @@ namespace HireMe.Services
         Task<Result> AcceptApplicationAsync(string employerId, int applicationId, CancellationToken cancellationToken = default);
         Task<Result> RejectApplicationAsync(string employerId, int applicationId, CancellationToken cancellationToken = default);
         Task<Result> WithdrawApplicationAsync(string workerId, int applicationId, CancellationToken cancellationToken = default);
+        Task<Result<IEnumerable<AppliedApplicationResponse>>> GetAppliedApplicationsByJobIdAsync(string employerId, int jobId, CancellationToken cancellationToken = default);
     }
 
     public class ApplicationService : IApplicationService
@@ -259,6 +261,49 @@ namespace HireMe.Services
 
             _logger.LogInformation("Application {ApplicationId} withdrawn successfully by worker {WorkerId}", applicationId, workerId);
             return Result.Success();
+        }
+
+        public async Task<Result<IEnumerable<AppliedApplicationResponse>>> GetAppliedApplicationsByJobIdAsync(string employerId, int jobId, CancellationToken cancellationToken = default)
+        {
+            _logger.LogInformation("Retrieving applied applications for job {JobId} by employer {EmployerId}", jobId, employerId);
+
+            var job = await _context.Jobs
+                .Where(j => j.Id == jobId)
+                .Select(j => new { j.Id, j.EmployerId })
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (job is null)
+            {
+                _logger.LogWarning("Get applied applications failed: Job with ID {JobId} not found", jobId);
+                return Result.Failure<IEnumerable<AppliedApplicationResponse>>(ApplicationErrors.JobNotFound);
+            }
+
+            if (job.EmployerId != employerId)
+            {
+                _logger.LogWarning("Get applied applications failed: Employer {EmployerId} does not own job {JobId}", employerId, jobId);
+                return Result.Failure<IEnumerable<AppliedApplicationResponse>>(ApplicationErrors.JobNotOwnedByEmployer);
+            }
+
+            var applications = await _context.Applications
+                .Where(a => a.JobId == jobId && a.Status == ApplicationStatus.Applied)
+                .Include(a => a.Worker)
+                .Select(a => new AppliedApplicationResponse
+                {
+                    ApplicationId = a.Id,
+                    Message = a.Message ?? string.Empty,
+                    CreatedAt = a.CreatedAt,
+                    IsUpdated = a.UpdatedAt != null,
+                    Worker = new WorkerInfoResponse
+                    {
+                        WorkerId = a.WorkerId,
+                        FullName = a.Worker!.FirstName + " " + a.Worker.LastName,
+                        ImageProfile = a.Worker.ImageProfile
+                    }
+                })
+                .ToListAsync(cancellationToken);
+
+            _logger.LogInformation("Successfully retrieved {Count} applied applications for job {JobId}", applications.Count, jobId);
+            return Result.Success<IEnumerable<AppliedApplicationResponse>>(applications);
         }
 
     }
