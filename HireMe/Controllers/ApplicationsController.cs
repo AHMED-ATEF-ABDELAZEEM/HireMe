@@ -26,7 +26,7 @@ namespace HireMe.Controllers
             var workerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var result = await _applicationService.AddApplicationAsync(workerId!, request, cancellationToken);
 
-            return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+            return result.IsSuccess ? Ok() : BadRequest(result.Error);
         }
 
         [HttpPut("{applicationId}")]

@@ -6,6 +6,7 @@ using FluentValidation;
 using Hangfire;
 using HangfireBasicAuthenticationFilter;
 using HireMe.Authentication;
+using HireMe.BackgroundJobs;
 using HireMe.Cache;
 using HireMe.Consts;
 using HireMe.CustomErrors;
@@ -45,7 +46,13 @@ namespace HireMe
 
             builder.Services.AddEndpointsApiExplorer(); 
 
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(options =>
+            {
+                // Enable XML comments
+                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFilename);
+                options.IncludeXmlComments(xmlPath);
+            });
 
             // Add Mapster
             var MappingConfig = TypeAdapterConfig.GlobalSettings;
@@ -81,10 +88,11 @@ namespace HireMe
             builder.Services.AddScoped<IPasswordService, PasswordService>();
             builder.Services.AddScoped<IRegistrationService, RegistrationService>();
             builder.Services.AddScoped<IGovernorateService, GovernorateService>();
-            builder.Services.AddScoped<IJobService, JobService>();
+            builder.Services.AddScoped<IJobService, JobService>(); 
             builder.Services.AddScoped<IQuestionService, QuestionService>();
             builder.Services.AddScoped<IAnswerService, AnswerService>();
             builder.Services.AddScoped<IApplicationService, ApplicationService>();
+            builder.Services.AddScoped<IApplicationStatusBackgroundJob, ApplicationStatusBackgroundJob>();
 
 
             builder.Services.AddScoped<IImageProfileService, ImageProfileService>();

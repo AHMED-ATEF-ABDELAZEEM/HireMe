@@ -180,7 +180,7 @@ namespace HireMe.Services
             await transaction.CommitAsync(cancellationToken);
 
             // Enqueue background job to handle related application status updates
-            BackgroundJob.Enqueue<IApplicationJob>(job => 
+            BackgroundJob.Enqueue<IApplicationStatusBackgroundJob>(job => 
                 job.HandleApplicationAcceptanceAsync(application.JobId, applicationId, application.WorkerId));
 
             _logger.LogInformation("Application {ApplicationId} accepted successfully by employer {EmployerId}. JobConnection {JobConnectionId} created. Background job enqueued.", 

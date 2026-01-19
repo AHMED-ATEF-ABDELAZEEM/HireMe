@@ -6,6 +6,7 @@ namespace HireMe.Enums
         InProgress = 1,
         Completed = 2,
         Closed = 3,
+        Cancelled = 4
 
     }
 
@@ -16,7 +17,8 @@ namespace HireMe.Enums
         Rejected = 2,
         Withdrawn = 3,
         WorkerAcceptedAtAnotherJob = 4,
-        EmployerChooseAnotherWorker = 5
+        EmployerChooseAnotherWorker = 5,
+        JobClosed = 6
     }
 
     public enum JobConnectionStatus

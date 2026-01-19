@@ -10,5 +10,7 @@ namespace HireMe.Contracts.Job.Responses
         public int NumberOfApplications { get; set; }
         public int WorkingHoursPerDay { get; set; }
         public int WorkingDaysPerWeek { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public bool IsUpdated { get; set; }
     }
 }

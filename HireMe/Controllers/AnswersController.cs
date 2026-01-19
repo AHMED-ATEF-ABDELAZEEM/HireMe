@@ -24,7 +24,7 @@ namespace HireMe.Controllers
             var employerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var result = await _answerService.AddAnswerAsync(employerId!, request, cancellationToken);
 
-            return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+            return result.IsSuccess ? Ok() : BadRequest(result.Error);
         }
 
         [HttpPut("{answerId}")]

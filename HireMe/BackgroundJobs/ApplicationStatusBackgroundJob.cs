@@ -10,16 +10,17 @@ using Microsoft.EntityFrameworkCore;
 namespace HireMe.BackgroundJobs
 {
 
-    public interface IApplicationJob
+    public interface IApplicationStatusBackgroundJob
     {
         Task HandleApplicationAcceptanceAsync(int jobId, int applicationId, string workerId);
+        Task HandleJobClosureAsync(int jobId);
     }
-    public class ApplicationJob : IApplicationJob
+    public class ApplicationStatusBackgroundJob : IApplicationStatusBackgroundJob
     {
         private readonly AppDbContext _context;
-        private readonly ILogger<ApplicationJob> _logger;
+        private readonly ILogger<ApplicationStatusBackgroundJob> _logger;
 
-        public ApplicationJob(AppDbContext context, ILogger<ApplicationJob> logger)
+        public ApplicationStatusBackgroundJob(AppDbContext context, ILogger<ApplicationStatusBackgroundJob> logger)
         {
             _context = context;
             _logger = logger;
@@ -63,6 +64,28 @@ namespace HireMe.BackgroundJobs
                     .SetProperty(a => a.Status, ApplicationStatus.WorkerAcceptedAtAnotherJob)
                     .SetProperty(a => a.StatusChangedAt, now));
             _logger.LogInformation("Successfully closed other applications for worker {WorkerId}", workerId);
+        }
+
+        public async Task HandleJobClosureAsync(int jobId)
+        {
+            try
+            {
+                _logger.LogInformation("Updating applications status to JobClosed for job {JobId}", jobId);
+                
+                var now = DateTime.UtcNow;
+                var updatedCount = await _context.Applications
+                    .Where(a => a.JobId == jobId && a.Status == ApplicationStatus.Applied)
+                    .ExecuteUpdateAsync(s => s
+                        .SetProperty(a => a.Status, ApplicationStatus.JobClosed)
+                        .SetProperty(a => a.StatusChangedAt, now));
+                
+                _logger.LogInformation("Successfully updated {Count} applications to JobClosed status for job {JobId}", updatedCount, jobId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while handling job closure for job {JobId}", jobId);
+                throw;
+            }
         }
 
 

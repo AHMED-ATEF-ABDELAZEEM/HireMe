@@ -15,7 +15,7 @@ namespace HireMe.Persistence.ModelConfiguration
             builder.HasOne(q => q.Job)
                 .WithMany(j => j.Questions)
                 .HasForeignKey(q => q.JobId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(q => q.Worker)
                 .WithMany()

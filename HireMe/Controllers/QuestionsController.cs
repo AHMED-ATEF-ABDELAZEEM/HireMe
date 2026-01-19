@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using HireMe.Contracts.Question.Requests;
+using HireMe.SeedingData;
 using HireMe.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,7 @@ namespace HireMe.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize (Roles = DefaultRoles.Worker)]
     public class QuestionsController : ControllerBase
     {
         private readonly IQuestionService _questionService;
@@ -19,12 +20,13 @@ namespace HireMe.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = DefaultRoles.Worker)]
         public async Task<IActionResult> AddQuestion([FromBody] AddQuestionRequest request, CancellationToken cancellationToken)
         {
             var WorkerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var result = await _questionService.AddQuestionAsync(WorkerId!, request, cancellationToken);
 
-            return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+            return result.IsSuccess ? Ok() : BadRequest(result.Error);
         }
 
         [HttpPut("{questionId}")]
@@ -45,11 +47,11 @@ namespace HireMe.Controllers
             return result.IsSuccess ? NoContent() : BadRequest(result.Error);
         }
 
-        [HttpGet]
+        [HttpGet("{jobId}")]
         [AllowAnonymous]
-        public async Task<IActionResult> GetAllQuestions(CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAllQuestions([FromRoute] int jobId, CancellationToken cancellationToken)
         {
-            var result = await _questionService.GetAllQuestionsAsync(cancellationToken);
+            var result = await _questionService.GetAllQuestionsAsync(jobId, cancellationToken);
             return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
         }
     }

@@ -14,7 +14,7 @@ namespace HireMe.Services
         Task<Result<Question>> AddQuestionAsync(string WorkerId, AddQuestionRequest request, CancellationToken cancellationToken = default);
         Task<Result> UpdateQuestionAsync(string workerId, int questionId, UpdateQuestionRequest request, CancellationToken cancellationToken = default);
         Task<Result> DeleteQuestionAsync(string workerId, int questionId, CancellationToken cancellationToken = default);
-        Task<Result<IEnumerable<QuestionSummaryResponse>>> GetAllQuestionsAsync(CancellationToken cancellationToken = default);
+        Task<Result<IEnumerable<QuestionSummaryResponse>>> GetAllQuestionsAsync(int jobId, CancellationToken cancellationToken = default);
     }
 
     public class QuestionService : IQuestionService
@@ -131,12 +131,19 @@ namespace HireMe.Services
             return Result.Success();
         }
 
-        public async Task<Result<IEnumerable<QuestionSummaryResponse>>> GetAllQuestionsAsync(CancellationToken cancellationToken = default)
+        public async Task<Result<IEnumerable<QuestionSummaryResponse>>> GetAllQuestionsAsync(int jobId, CancellationToken cancellationToken = default)
         {
-            _logger.LogInformation("Retrieving all questions");
+            _logger.LogInformation("Retrieving all questions for job {JobId}", jobId);
+
+            var jobExists = await _context.Jobs.AnyAsync(j => j.Id == jobId, cancellationToken);
+            if (!jobExists)
+            {
+                _logger.LogWarning("Get questions failed: Job with ID {JobId} not found", jobId);
+                return Result.Failure<IEnumerable<QuestionSummaryResponse>>(JobErrors.JobNotFound);
+            }
 
             var questions = await _context.Questions
-                .Where(q => !q.IsDeleted)
+                .Where(q => q.JobId == jobId)
                 .Select(q => new QuestionSummaryResponse
                 {
                     Id = q.Id,
@@ -147,7 +154,7 @@ namespace HireMe.Services
                 })
                 .ToListAsync(cancellationToken);
 
-            _logger.LogInformation("Successfully retrieved {QuestionCount} questions", questions.Count);
+            _logger.LogInformation("Successfully retrieved {QuestionCount} questions for job {JobId}", questions.Count, jobId);
             return Result.Success<IEnumerable<QuestionSummaryResponse>>(questions);
         }
     }

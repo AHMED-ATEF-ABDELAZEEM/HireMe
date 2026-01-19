@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HireMe</name>
+    </assembly>
+    <members>
+        <member name="M:HireMe.Controllers.JobsController.CreateJob(HireMe.Contracts.Job.Requests.JobRequest,System.Threading.CancellationToken)">
+            <summary>
+            Creates a new job posting
+            </summary>
+            <remarks>
+            This endpoint allows authenticated employers to create a new job posting.
+            The employer ID is extracted from the JWT token.
+            
+            Sample request:
+            
+                POST /Jobs
+                {
+                    "jobTitle": "Software Developer",
+                    "salary": 5000.00,
+                    "hasAccommodation": true,
+                    "workDays": 31,
+                    "governorateId": 1,
+                    "gender": 0,
+                    "shiftStartTime": "09:00:00",
+                    "shiftEndTime": "17:00:00",
+                    "address": "123 Main Street, Cairo",
+                    "description": "We are looking for an experienced software developer",
+                    "experience": "3+ years of experience required"
+                }
+                
+            WorkDays is a bitmask (Saturday=1, Sunday=2, Monday=4, Tuesday=8, Wednesday=16, Thursday=32, Friday=64) that min value is 1 and max value is 127.
+            Gender: 0 = Any, 1 = Male, 2 = Female
+            to get GovernorateId refer to /Governorates endpoint.
+            </remarks>
+            <param name="request">The job creation request containing all job details</param>
+            <param name="cancellationToken">Cancellation token</param>
+            <response code="200">Job created successfully</response>
+            <response code="400">
+            Bad request - Possible errors:
+            - InvalidGovernorate: The specified governorate does not exist
+            - Validation errors: Missing or invalid required fields
+            </response>
+            <response code="401">Unauthorized - User must be authenticated</response>
+            
+        </member>
+        <member name="M:HireMe.Controllers.JobsController.GetAllJobs(System.Threading.CancellationToken)">
+            <summary>
+            Retrieves all job postings
+            </summary>
+            <remarks>
+            This endpoint returns a list of all available job postings with summary information.
+            No authentication is required to access this endpoint.
+            
+            Sample response:
+            
+                GET /Jobs
+                [
+                    {
+                        "id": 1,
+                        "jobTitle": "Software Developer",
+                        "salary": 5000.00,
+                        "governorateName": "Cairo",
+                        "numberOfQuestions": 5,
+                        "numberOfApplications": 12,
+                        "workingHoursPerDay": 8,
+                        "workingDaysPerWeek": 5,
+                        "createdAt": "2026-01-18T10:30:00Z",
+                        "isUpdated": false
+                    }
+                ]
+            </remarks>
+            <param name="cancellationToken">Cancellation token</param>
+            <response code="200">Returns the list of all jobs</response>
+            <response code="400">Bad request - Unexpected error occurred</response>
+        </member>
+        <member name="T:HireMe.Migrations.InitialMigration">
+            <inheritdoc />
+        </member>
+        <member name="M:HireMe.Migrations.InitialMigration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:HireMe.Migrations.InitialMigration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:HireMe.Migrations.InitialMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

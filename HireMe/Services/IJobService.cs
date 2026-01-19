@@ -1,4 +1,6 @@
 using System.Numerics;
+using Hangfire;
+using HireMe.BackgroundJobs;
 using HireMe.Consts;
 using HireMe.Contracts.Job.Requests;
 using HireMe.Contracts.Job.Responses;
@@ -154,7 +156,10 @@ namespace HireMe.Services
             job.Status = JobStatus.Closed;
             await _context.SaveChangesAsync(cancellationToken);
 
-            _logger.LogInformation("Successfully closed job with ID: {JobId}", jobId);
+            // Enqueue background job to update all pending applications to JobClosed status
+            BackgroundJob.Enqueue<IApplicationStatusBackgroundJob>(x => x.HandleJobClosureAsync(jobId));
+
+            _logger.LogInformation("Successfully closed job with ID: {JobId} and enqueued background job to update applications", jobId);
             return Result.Success();
         }
 
@@ -163,6 +168,7 @@ namespace HireMe.Services
             _logger.LogInformation("Retrieving all jobs");
 
             var jobs = await _context.Jobs
+                .Where(j => j.Status == JobStatus.Published)
                 .Select(j => new JobSummaryResponse
                 {
                     Id = j.Id,
@@ -172,7 +178,9 @@ namespace HireMe.Services
                     NumberOfQuestions = j.Questions != null ? j.Questions.Count : 0,
                     NumberOfApplications = j.Applications != null ? j.Applications.Count : 0,
                     WorkingHoursPerDay = j.WorkingHoursPerDay,
-                    WorkingDaysPerWeek = j.WorkingDaysPerWeek
+                    WorkingDaysPerWeek = j.WorkingDaysPerWeek,
+                    CreatedAt = j.CreatedAt,
+                    IsUpdated = j.UpdatedAt != null
                 })
                 .ToListAsync(cancellationToken);
 
