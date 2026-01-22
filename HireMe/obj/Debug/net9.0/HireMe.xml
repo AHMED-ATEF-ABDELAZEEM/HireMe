@@ -192,6 +192,7 @@
             
                 {
                     "jobId": 5,
+                    "jobStatus": "Published",
                     "numberOfApplications": 15,
                     "appliedApplications": 8,
                     "rejectedApplications": 4,
@@ -232,6 +233,7 @@
             
                 {
                     "jobId": 5,
+                    "jobStatus": "Published",
                     "numberOfApplications": 15,
                     "appliedApplications": 8,
                     "rejectedApplications": 4,
@@ -254,6 +256,47 @@
             <param name="cancellationToken">Cancellation token.</param>
             <response code="200">Analytics returned successfully.</response>
             <response code="400">Invalid request or JobNotFound/JobNotOwnedByEmployer.</response>
+            <response code="401">User is not authenticated.</response>
+            <response code="403">User is not authorized (not an employer).</response>
+        </member>
+        <member name="M:HireMe.Controllers.EmployerDashboardController.GetRecentJobs(System.Threading.CancellationToken)">
+            <summary>
+            Get the recent 5 jobs for the employer
+            </summary>
+            <remarks>
+            Returns summary information for the employer's 5 most recently created jobs including:
+            - Job ID, title, governorate
+            - Working days per week and hours per day
+            - Number of questions and applications
+            - Job status
+            
+            Sample response:
+            
+                [
+                    {
+                        "id": 10,
+                        "jobTitle": "Senior Software Engineer",
+                        "governorate": "Cairo",
+                        "workingDaysPerWeek": 5,
+                        "workingHoursPerDay": 8,
+                        "numberOfQuestions": 3,
+                        "numberOfApplications": 12,
+                        "jobStatus": "Published"
+                    },
+                    {
+                        "id": 9,
+                        "jobTitle": "Marketing Manager",
+                        "governorate": "Alexandria",
+                        "workingDaysPerWeek": 6,
+                        "workingHoursPerDay": 8,
+                        "numberOfQuestions": 5,
+                        "numberOfApplications": 8,
+                        "jobStatus": "Closed"
+                    }
+                ]
+            </remarks>
+            <param name="cancellationToken">Cancellation token.</param>
+            <response code="200">Recent jobs returned successfully.</response>
             <response code="401">User is not authenticated.</response>
             <response code="403">User is not authorized (not an employer).</response>
         </member>

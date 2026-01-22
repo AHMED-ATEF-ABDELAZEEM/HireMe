@@ -11,6 +11,7 @@ namespace HireMe.Services
     public interface IEmployerDashboardService
     {
         Task<Result<JobAnalyticsResponse>> GetJobAnalyticsAsync(string employerId, int jobId, CancellationToken cancellationToken = default);
+        Task<Result<IEnumerable<RecentJobsSummaryResponse>>> GetRecentJobsAsync(string employerId, CancellationToken cancellationToken = default);
     }
 
     public class EmployerDashboardService : IEmployerDashboardService
@@ -98,6 +99,34 @@ namespace HireMe.Services
 
             _logger.LogInformation("Analytics aggregation completed for job {JobId}", jobId);
             return Result.Success(response);
+        }
+
+        public async Task<Result<IEnumerable<RecentJobsSummaryResponse>>> GetRecentJobsAsync(string employerId, CancellationToken cancellationToken = default)
+        {
+            _logger.LogInformation("Fetching recent 5 jobs for employer {EmployerId}", employerId);
+
+            var recentJobs = await _context.Jobs
+                .AsNoTracking()
+                .Where(j => j.EmployerId == employerId)
+                .OrderByDescending(j => j.CreatedAt)
+                .Take(5)
+                .Select(j => new RecentJobsSummaryResponse
+                {
+                    Id = j.Id,
+                    JobTitle = j.JobTitle,
+                    Governorate = j.Governorate!.NameArabic,
+                    WorkingDaysPerWeek = j.WorkingDaysPerWeek,
+                    WorkingHoursPerDay = j.WorkingHoursPerDay,
+                    NumberOfQuestions = j.Questions!.Count,
+                    NumberOfApplications = j.Applications!.Count,
+                    JobStatus = j.Status.ToString(),
+                    CreatedAt = j.CreatedAt
+                })
+                .ToListAsync(cancellationToken);
+                
+
+            _logger.LogInformation("Retrieved {Count} recent jobs for employer {EmployerId}", recentJobs.Count, employerId);
+            return Result.Success<IEnumerable<RecentJobsSummaryResponse>>(recentJobs);
         }
     }
 }

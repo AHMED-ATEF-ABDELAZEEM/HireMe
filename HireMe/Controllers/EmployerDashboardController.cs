@@ -29,6 +29,7 @@ namespace HireMe.Controllers
         /// - Application statistics (total, applied, rejected, withdrawn, accepted at another job)
         /// - Number of unanswered questions
         /// - Active job connection details with worker information
+        /// - Job status: Published, InProgress, Completed, Closed, Cancelled
         /// 
         /// Sample response:
         /// 
@@ -86,6 +87,7 @@ namespace HireMe.Controllers
         /// - Application statistics (total, applied, rejected, withdrawn, accepted at another job)
         /// - Number of unanswered questions
         /// - Active job connection details with worker information
+        /// - Job status: Published, InProgress, Completed, Closed, Cancelled
         /// 
         /// Only the employer who owns the job can access its analytics.
         /// 
@@ -128,6 +130,58 @@ namespace HireMe.Controllers
             var employerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var analytics = await _employerDashboardService.GetJobAnalyticsAsync(employerId!, jobId, cancellationToken);
             return analytics.IsSuccess ? Ok(analytics.Value) : BadRequest(analytics.Error);
+        }
+
+        /// <summary>
+        /// Get the recent 5 jobs for the employer
+        /// </summary>
+        /// <remarks>
+        /// Returns summary information for the employer's 5 most recently created jobs including:
+        /// - Job ID, title, governorate
+        /// - Working days per week and hours per day
+        /// - Number of questions and applications
+        /// - Job status: Published, InProgress, Completed, Closed, Cancelled
+        /// 
+        /// Sample response:
+        /// 
+        ///     [
+        ///         {
+        ///             "id": 10,
+        ///             "jobTitle": "Senior Software Engineer",
+        ///             "governorate": "Cairo",
+        ///             "workingDaysPerWeek": 5,
+        ///             "workingHoursPerDay": 8,
+        ///             "numberOfQuestions": 3,
+        ///             "numberOfApplications": 12,
+        ///             "jobStatus": "Published",
+        ///             "createdAt": "2026-01-20T10:00:00Z"
+        ///         },
+        ///         {
+        ///             "id": 9,
+        ///             "jobTitle": "Marketing Manager",
+        ///             "governorate": "Alexandria",
+        ///             "workingDaysPerWeek": 6,
+        ///             "workingHoursPerDay": 8,
+        ///             "numberOfQuestions": 5,
+        ///             "numberOfApplications": 8,
+        ///             "jobStatus": "Closed",
+        ///             "createdAt": "2026-01-15T10:00:00Z"
+        ///         }
+        ///     ]
+        /// </remarks>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <response code="200">Recent jobs returned successfully.</response>
+        /// <response code="401">User is not authenticated.</response>
+        /// <response code="403">User is not authorized (not an employer).</response>
+        [HttpGet("jobs/recent")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> GetRecentJobs(CancellationToken cancellationToken)
+        {
+            var employerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var recentJobs = await _employerDashboardService.GetRecentJobsAsync(employerId!, cancellationToken);
+            return recentJobs.IsSuccess ? Ok(recentJobs.Value) : BadRequest(recentJobs.Error);
         }
     }
 }
