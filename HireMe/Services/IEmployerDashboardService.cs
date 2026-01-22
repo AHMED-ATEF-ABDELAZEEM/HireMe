@@ -12,6 +12,7 @@ namespace HireMe.Services
     {
         Task<Result<JobAnalyticsResponse>> GetJobAnalyticsAsync(string employerId, int jobId, CancellationToken cancellationToken = default);
         Task<Result<IEnumerable<RecentJobsSummaryResponse>>> GetRecentJobsAsync(string employerId, CancellationToken cancellationToken = default);
+        Task<Result<EmployerDashboardResponse>> GetEmployerDashboardAsync(string employerId, CancellationToken cancellationToken = default);
     }
 
     public class EmployerDashboardService : IEmployerDashboardService
@@ -127,6 +128,58 @@ namespace HireMe.Services
 
             _logger.LogInformation("Retrieved {Count} recent jobs for employer {EmployerId}", recentJobs.Count, employerId);
             return Result.Success<IEnumerable<RecentJobsSummaryResponse>>(recentJobs);
+        }
+
+        public async Task<Result<EmployerDashboardResponse>> GetEmployerDashboardAsync(string employerId, CancellationToken cancellationToken = default)
+        {
+            _logger.LogInformation("Fetching dashboard for employer {EmployerId}", employerId);
+
+            // Get published jobs with pending applications and unanswered questions
+            var publishedJobs = await _context.Jobs
+                .AsNoTracking()
+                .Where(j => j.EmployerId == employerId && j.Status == JobStatus.Published)
+                .OrderByDescending(j => j.CreatedAt)
+                .Select(j => new PublishedJobCardResponse
+                {
+                    Id = j.Id,
+                    JobTitle = j.JobTitle,
+                    PendingApplications = j.Applications!.Count(a => a.Status == ApplicationStatus.Applied),
+                    UnansweredQuestions = j.Questions!.Count(q => q.Answer == null)
+                })
+                .ToListAsync(cancellationToken);
+
+            // Get active connections where InteractionEndDate is in the future
+            var now = DateTime.UtcNow;
+            var activeConnections = await _context.JobConnections
+                .AsNoTracking()
+                .Include(jc => jc.Job)
+                .Include(jc => jc.Worker)
+                .Where(jc => jc.EmployerId == employerId && jc.InteractionEndDate > now)
+                .OrderByDescending(jc => jc.CreatedAt)
+                .Select(jc => new ActiveConnectionCardResponse
+                {
+                    Id = jc.Id,
+                    JobTitle = jc.Job!.JobTitle,
+                    Worker = new Contracts.Application.Responses.WorkerInfoResponse
+                    {
+                        WorkerId = jc.WorkerId,
+                        FullName = jc.Worker!.FirstName + " " + jc.Worker.LastName,
+                        ImageProfile = jc.Worker.ImageProfile
+                    },
+                    EndsAt = jc.InteractionEndDate
+                })
+                .ToListAsync(cancellationToken);
+
+            var response = new EmployerDashboardResponse
+            {
+                PublishedJobs = publishedJobs,
+                ActiveConnections = activeConnections
+            };
+
+            _logger.LogInformation("Retrieved {JobCount} published jobs and {ConnectionCount} active connections for employer {EmployerId}", 
+                publishedJobs.Count, activeConnections.Count, employerId);
+
+            return Result.Success(response);
         }
     }
 }

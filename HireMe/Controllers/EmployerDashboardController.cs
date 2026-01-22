@@ -22,6 +22,75 @@ namespace HireMe.Controllers
         }
 
         /// <summary>
+        /// Get employer dashboard (PRIMARY ENTRY POINT FOR MOBILE APP)
+        /// </summary>
+        /// <remarks>
+        /// Returns the main dashboard view for employer after login with two sections:
+        /// 
+        /// 1. Published Jobs - Shows all active job postings with:
+        ///    - Job ID and title
+        ///    - Pending applications count (applications with status = Applied, awaiting review)
+        ///    - Unanswered questions count (questions without answers)
+        ///    - Each card is clickable to view detailed analytics via GET /analytics/{jobId}
+        ///    - Contains action buttons to view applications or questions for that job
+        /// 
+        /// 2. Active Connections - Shows ongoing worker engagements where InteractionEndDate > current time:
+        ///    - Includes connections regardless of status (Active, Cancelled, etc.)
+        ///    - Cancelled connections still allow feedback and reports until InteractionEndDate
+        ///    - Worker information (name, profile image)
+        ///    - Contract end date (InteractionEndDate)
+        ///    - Each card is clickable to access interaction features (chat, feedback, reports)
+        /// 
+        /// This endpoint is designed as the home page entry point after login.
+        /// Use this instead of GET /analytics which only shows the latest single job.
+        /// 
+        /// Sample response:
+        /// 
+        ///     {
+        ///         "publishedJobs": [
+        ///             {
+        ///                 "id": 10,
+        ///                 "jobTitle": "Senior Software Engineer",
+        ///                 "pendingApplications": 12,
+        ///                 "unansweredQuestions": 3
+        ///             },
+        ///             {
+        ///                 "id": 9,
+        ///                 "jobTitle": "Marketing Manager",
+        ///                 "pendingApplications": 5,
+        ///                 "unansweredQuestions": 0
+        ///             }
+        ///         ],
+        ///         "activeConnections": [
+        ///             {
+        ///                 "id": 5,
+        ///                 "jobTitle": "Marketing Manager",
+        ///                 "worker": {
+        ///                     "workerId": "abc123",
+        ///                     "fullName": "Ahmed Mohamed",
+        ///                     "imageProfile": "profile.jpg"
+        ///                 },
+        ///                 "endsAt": "2026-02-15T10:00:00Z"
+        ///             }
+        ///         ]
+        ///     }
+        /// </remarks>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <response code="200">Dashboard data returned successfully.</response>
+        /// <response code="401">User is not authenticated.</response>
+        /// <response code="403">User is not authorized (not an employer).</response>
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> GetDashboard(CancellationToken cancellationToken)
+        {
+            var employerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var dashboard = await _employerDashboardService.GetEmployerDashboardAsync(employerId!, cancellationToken);
+            return dashboard.IsSuccess ? Ok(dashboard.Value) : BadRequest(dashboard.Error);
+        }
+
+        /// <summary>
         /// Get analytics for the employer's most recent job
         /// </summary>
         /// <remarks>
