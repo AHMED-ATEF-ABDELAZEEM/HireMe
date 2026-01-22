@@ -63,26 +63,7 @@ namespace HireMe.Services
                 .Where(q => q.JobId == jobId && q.Answer == null)
                 .CountAsync(cancellationToken);
 
-            // Active connection (if any)
-            var activeConnectionTask = _context.JobConnections
-                .AsNoTracking()
-                .Include(jc => jc.Worker)
-                .Where(jc => jc.JobId == jobId && jc.Status == JobConnectionStatus.Active)
-                .Select(jc => new JobConnectionBriefResponse
-                {
-                    JobConnectionId = jc.Id,
-                    StartedAt = jc.CreatedAt,
-                    EndsAt = jc.InteractionEndDate,
-                    Worker = new Contracts.Application.Responses.WorkerInfoResponse
-                    {
-                        WorkerId = jc.WorkerId,
-                        FullName = jc.Worker!.FirstName + " " + jc.Worker.LastName,
-                        ImageProfile = jc.Worker.ImageProfile
-                    }
-                })
-                .FirstOrDefaultAsync(cancellationToken);
-
-            await Task.WhenAll(totalApplicationsTask, appliedCountTask, rejectedCountTask, withdrawnCountTask, acceptedAtAnotherJobCountTask, lastApplicationAtTask, unansweredQuestionsTask, activeConnectionTask);
+            await Task.WhenAll(totalApplicationsTask, appliedCountTask, rejectedCountTask, withdrawnCountTask, acceptedAtAnotherJobCountTask, lastApplicationAtTask, unansweredQuestionsTask);
 
             var response = new JobAnalyticsResponse
             {
@@ -94,8 +75,7 @@ namespace HireMe.Services
                 RejectedApplications = rejectedCountTask.Result,
                 WithdrawnApplications = withdrawnCountTask.Result,
                 AcceptedAtAnotherJobApplications = acceptedAtAnotherJobCountTask.Result,
-                UnansweredQuestions = unansweredQuestionsTask.Result,
-                ActiveConnection = activeConnectionTask.Result
+                UnansweredQuestions = unansweredQuestionsTask.Result
             };
 
             _logger.LogInformation("Analytics aggregation completed for job {JobId}", jobId);

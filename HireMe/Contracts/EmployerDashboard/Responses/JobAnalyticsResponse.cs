@@ -14,7 +14,5 @@ namespace HireMe.Contracts.EmployerDashboard.Responses
         public int UnansweredQuestions { get; set; }
 
         public DateTime? LastApplicationAt { get; set; }
-
-        public JobConnectionBriefResponse? ActiveConnection { get; set; }
     }
 }
