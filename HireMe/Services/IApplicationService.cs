@@ -8,6 +8,7 @@ using HireMe.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Hangfire;
 using HireMe.BackgroundJobs;
+using HireMe.Contracts.Application;
 
 namespace HireMe.Services
 {
@@ -19,6 +20,7 @@ namespace HireMe.Services
         Task<Result> RejectApplicationAsync(string employerId, int applicationId, CancellationToken cancellationToken = default);
         Task<Result> WithdrawApplicationAsync(string workerId, int applicationId, CancellationToken cancellationToken = default);
         Task<Result<IEnumerable<AppliedApplicationResponse>>> GetAppliedApplicationsByJobIdAsync(string employerId, int jobId, CancellationToken cancellationToken = default);
+        Task<Result<IEnumerable<PendingApplicationResponse>>> GetPendingApplicationsForWorkerAsync(string workerId, CancellationToken cancellationToken = default);
     }
 
     public class ApplicationService : IApplicationService
@@ -309,6 +311,27 @@ namespace HireMe.Services
 
             _logger.LogInformation("Successfully retrieved {Count} applied applications for job {JobId}", applications.Count, jobId);
             return Result.Success<IEnumerable<AppliedApplicationResponse>>(applications);
+        }
+
+        public async Task<Result<IEnumerable<PendingApplicationResponse>>> GetPendingApplicationsForWorkerAsync(string workerId, CancellationToken cancellationToken = default)
+        {
+            _logger.LogInformation("Retrieving pending applications for worker {WorkerId}", workerId);
+
+            var pendingApplications = await _context.Applications
+                .Where(a => a.WorkerId == workerId && a.Status == ApplicationStatus.Applied)
+                .OrderByDescending(a => a.CreatedAt)
+                .Select(a => new PendingApplicationResponse(
+                    a.Id,
+                    a.Message,
+                    a.CreatedAt,
+                    a.Job.JobTitle,
+                    a.Job.Salary,
+                    a.Job.Governorate.NameArabic
+                ))
+                .ToListAsync(cancellationToken);
+
+            _logger.LogInformation("Successfully retrieved {Count} pending applications for worker {WorkerId}", pendingApplications.Count, workerId);
+            return Result.Success<IEnumerable<PendingApplicationResponse>>(pendingApplications);
         }
 
     }

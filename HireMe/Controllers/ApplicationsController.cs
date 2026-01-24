@@ -176,5 +176,38 @@ namespace HireMe.Controllers
 
             return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
         }
+
+        /// <summary>
+        /// Gets all pending applications for the authenticated worker.
+        /// </summary>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Returns list of pending applications with job details.</returns>
+        /// <remarks>
+        /// Returns applications that are in Applied status (awaiting employer response).
+        /// Each application includes:
+        /// - Application ID and message
+        /// - Application creation date
+        /// - Job title, salary, and governorate
+        /// 
+        /// Worker can use this to:
+        /// - View all pending applications
+        /// - Withdraw applications (DELETE /applications/{id})
+        /// - Update application message (PUT /applications/{id})
+        /// 
+        /// Applications are ordered by creation date (newest first).
+        /// Only includes worker's own applications.
+        /// </remarks>
+        /// <response code="200">Pending applications retrieved successfully.</response>
+        /// <response code="401">User is not authenticated.</response>
+        /// <response code="403">User is not authorized (not a worker).</response>
+        [HttpGet("pending")]
+        [Authorize(Roles = DefaultRoles.Worker)]
+        public async Task<IActionResult> GetPendingApplications(CancellationToken cancellationToken)
+        {
+            var workerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _applicationService.GetPendingApplicationsForWorkerAsync(workerId!, cancellationToken);
+
+            return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+        }
     }
 }
