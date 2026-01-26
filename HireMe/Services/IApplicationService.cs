@@ -115,7 +115,7 @@ namespace HireMe.Services
         }
 
         // TODO : send notification to worket that application on job is accepted
-        // TODO : Add Background jobs when create JobConnection to complete it if not canceld afetr 10 day
+        // (Done) TODO : Add Background jobs when create JobConnection to complete it if not canceld afetr 10 day
         public async Task<Result> AcceptApplicationAsync(string employerId, int applicationId, CancellationToken cancellationToken = default)
         {
             _logger.LogInformation("Starting application acceptance process for application {ApplicationId} by employer {EmployerId}", applicationId, employerId);
@@ -190,7 +190,12 @@ namespace HireMe.Services
             BackgroundJob.Enqueue<IApplicationStatusBackgroundJob>(job => 
                 job.HandleApplicationAcceptanceAsync(application.JobId, applicationId, application.WorkerId));
 
-            _logger.LogInformation("Application {ApplicationId} accepted successfully by employer {EmployerId}. JobConnection {JobConnectionId} created. Background job enqueued.", 
+            // Schedule background job to complete the job connection and process feedback at InteractionEndDate
+            BackgroundJob.Schedule<IJobConnectionCompletionBackgroundJob>(
+                job => job.ProcessJobConnectionCompletionAsync(jobConnection.Id),
+                jobConnection.InteractionEndDate);
+
+            _logger.LogInformation("Application {ApplicationId} accepted successfully by employer {EmployerId}. JobConnection {JobConnectionId} created. Background jobs enqueued.", 
                 applicationId, employerId, jobConnection.Id);
             return Result.Success();
         }
