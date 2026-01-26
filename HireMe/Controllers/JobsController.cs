@@ -164,7 +164,7 @@ namespace HireMe.Controllers
         /// - JobAlreadyClosed: The job is already closed
         /// </response>
         [HttpPut("{id}/close")]
-        [AllowAnonymous]
+        [Authorize (Roles = DefaultRoles.Employer)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CloseJob([FromRoute] int id, CancellationToken cancellationToken)
