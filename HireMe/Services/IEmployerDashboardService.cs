@@ -47,35 +47,39 @@ namespace HireMe.Services
                 return Result.Failure<JobAnalyticsResponse>(ApplicationErrors.JobNotOwnedByEmployer);
             }
 
-            // Applications counts
-            var applications = _context.Applications.AsNoTracking().Where(a => a.JobId == jobId);
+            // Single query with projection and aggregation
+            var analytics = await _context.Applications
+                .AsNoTracking()
+                .Where(a => a.JobId == jobId)
+                .GroupBy(a => a.JobId)
+                .Select(g => new
+                {
+                    TotalApplications = g.Count(),
+                    AppliedCount = g.Count(a => a.Status == ApplicationStatus.Applied),
+                    RejectedCount = g.Count(a => a.Status == ApplicationStatus.Rejected),
+                    WithdrawnCount = g.Count(a => a.Status == ApplicationStatus.Withdrawn),
+                    AcceptedAtAnotherJobCount = g.Count(a => a.Status == ApplicationStatus.WorkerAcceptedAtAnotherJob),
+                    LastApplicationAt = g.Max(a => (DateTime?)a.CreatedAt)
+                })
+                .FirstOrDefaultAsync(cancellationToken);
 
-            var totalApplicationsTask = applications.CountAsync(cancellationToken);
-            var appliedCountTask = applications.Where(a => a.Status == ApplicationStatus.Applied).CountAsync(cancellationToken);
-            var rejectedCountTask = applications.Where(a => a.Status == ApplicationStatus.Rejected).CountAsync(cancellationToken);
-            var withdrawnCountTask = applications.Where(a => a.Status == ApplicationStatus.Withdrawn).CountAsync(cancellationToken);
-            var acceptedAtAnotherJobCountTask = applications.Where(a => a.Status == ApplicationStatus.WorkerAcceptedAtAnotherJob).CountAsync(cancellationToken);
-            var lastApplicationAtTask = applications.OrderByDescending(a => a.CreatedAt).Select(a => a.CreatedAt).FirstOrDefaultAsync(cancellationToken);
-
-            // Unanswered questions
-            var unansweredQuestionsTask = _context.Questions
+            // Separate query for unanswered questions
+            var unansweredQuestions = await _context.Questions
                 .AsNoTracking()
                 .Where(q => q.JobId == jobId && q.Answer == null)
                 .CountAsync(cancellationToken);
-
-            await Task.WhenAll(totalApplicationsTask, appliedCountTask, rejectedCountTask, withdrawnCountTask, acceptedAtAnotherJobCountTask, lastApplicationAtTask, unansweredQuestionsTask);
 
             var response = new JobAnalyticsResponse
             {
                 JobId = jobId,
                 JobStatus = job.Status.ToString(),
-                NumberOfApplications = totalApplicationsTask.Result,
-                LastApplicationAt = lastApplicationAtTask.Result == default ? null : lastApplicationAtTask.Result,
-                AppliedApplications = appliedCountTask.Result,
-                RejectedApplications = rejectedCountTask.Result,
-                WithdrawnApplications = withdrawnCountTask.Result,
-                AcceptedAtAnotherJobApplications = acceptedAtAnotherJobCountTask.Result,
-                UnansweredQuestions = unansweredQuestionsTask.Result
+                NumberOfApplications = analytics?.TotalApplications ?? 0,
+                LastApplicationAt = analytics?.LastApplicationAt,
+                AppliedApplications = analytics?.AppliedCount ?? 0,
+                RejectedApplications = analytics?.RejectedCount ?? 0,
+                WithdrawnApplications = analytics?.WithdrawnCount ?? 0,
+                AcceptedAtAnotherJobApplications = analytics?.AcceptedAtAnotherJobCount ?? 0,
+                UnansweredQuestions = unansweredQuestions
             };
 
             _logger.LogInformation("Analytics aggregation completed for job {JobId}", jobId);
