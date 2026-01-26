@@ -18,7 +18,6 @@ namespace HireMe.Services
     {
         Task<Result<Job>> CreateJobAsync(string employerId, JobRequest jobRequest, CancellationToken cancellationToken = default);
         Task<Result<JobResponse>> GetJobByIdAsync(int jobId, CancellationToken cancellationToken = default);
-        Task<Result<IEnumerable<string>>> GetWorkDaysAtJobInArabicAsync(int jobId, CancellationToken cancellationToken = default);
         Task<Result> CloseJobAsync(int jobId, CancellationToken cancellationToken = default);
         Task<Result<int>> GetLastJobIdForEmployerAsync(string employerId, CancellationToken cancellationToken = default);
         Task<Result<IEnumerable<JobSummaryResponse>>> GetAllJobsAsync(CancellationToken cancellationToken = default);
@@ -102,7 +101,8 @@ namespace HireMe.Services
                     Address = j.Address,
                     Description = j.Description,
                     Experience = j.Experience,
-                    GovernorateName = j.Governorate.NameArabic
+                    GovernorateName = j.Governorate.NameArabic,
+                    WorkingDaysInArabic = WorkDaysInArabic.GetDays(j.WorkDays)
                 })
                 .FirstOrDefaultAsync(cancellationToken);
 
@@ -114,25 +114,6 @@ namespace HireMe.Services
 
             _logger.LogInformation("Successfully retrieved job with ID: {JobId}", jobId);
             return Result.Success(job);
-        }
-
-        public async Task<Result<IEnumerable<string>>> GetWorkDaysAtJobInArabicAsync(int jobId, CancellationToken cancellationToken = default)
-        {
-            _logger.LogInformation("Retrieving work days for job ID: {JobId}", jobId);
-
-            var job = await _context.Jobs
-                .Where(j => j.Id == jobId)
-                .Select(j => new { j.WorkDays })
-                .FirstOrDefaultAsync(cancellationToken);
-
-            if (job is null)
-            {
-                _logger.LogWarning("Failed to retrieve work days: Job with ID {JobId} not found", jobId);
-                return Result.Failure<IEnumerable<string>>(JobErrors.JobNotFound);
-            }
-
-            _logger.LogInformation("Successfully retrieved work days for job ID: {JobId}", jobId);
-            return Result.Success(WorkDaysInArabic.GetDays(job.WorkDays));
         }
 
         public async Task<Result> CloseJobAsync(int jobId, CancellationToken cancellationToken = default)

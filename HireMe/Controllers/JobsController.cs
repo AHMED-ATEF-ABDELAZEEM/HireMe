@@ -83,15 +83,56 @@ namespace HireMe.Controllers
         /// 
         ///     GET /Jobs/5
         ///     
+        /// Sample response:
+        /// 
+        ///     {
+        ///         "id": 5,
+        ///         "jobTitle": "Software Developer",
+        ///         "salary": 5000.00,
+        ///         "hasAccommodation": true,
+        ///         "workingDaysPerWeek": 5,
+        ///         "workingHoursPerDay": 8,
+        ///         "gender": 0,
+        ///         "shiftType": 0,
+        ///         "shiftStartTime": "09:00:00",
+        ///         "shiftEndTime": "17:00:00",
+        ///         "address": "123 Main Street, Cairo",
+        ///         "description": "We are looking for an experienced software developer",
+        ///         "experience": "3+ years of experience required",
+        ///         "governorateName": "القاهرة",
+        ///         "workingDaysInArabic": ["السبت", "الأحد", "الاثنين", "الثلاثاء", "الأربعاء"]
+        ///     }
+        ///     
+        /// Response Fields:
+        /// - id: Unique identifier of the job
+        /// - jobTitle: Title/position of the job
+        /// - salary: Monthly salary in the local currency
+        /// - hasAccommodation: Whether accommodation is provided (true/false)
+        /// - workingDaysPerWeek: Number of working days per week
+        /// - workingHoursPerDay: Number of working hours per day
+        /// - gender: Preferred gender for the position
+        ///   * 0 = Any (no preference)
+        ///   * 1 = Male
+        ///   * 2 = Female
+        /// - shiftType: Type of work shift
+        ///   * 0 = Morning (starts before 12 PM)
+        ///   * 1 = Night (starts at or after 12 PM)
+        /// - shiftStartTime: Start time of the work shift (HH:mm:ss format)
+        /// - shiftEndTime: End time of the work shift (HH:mm:ss format)
+        /// - address: Physical location address of the job
+        /// - description: Detailed description of the job responsibilities
+        /// - experience: Required experience or qualifications
+        /// - governorateName: Name of the governorate/region in Arabic
+        /// - workingDaysInArabic: List of working days in Arabic (e.g., ["السبت", "الأحد", ...])
         /// </remarks>
         /// <param name="id">The unique identifier of the job</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        /// <response code="200">Returns the job details</response>
+        /// <response code="200">Returns the job details with all information including translated fields</response>
         /// <response code="400">Bad request - Possible errors:
         /// - JobNotFound: The specified job ID does not exist
         /// </response>
         [HttpGet("{id}")]
-        [AllowAnonymous]
+        [Authorize]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -101,37 +142,7 @@ namespace HireMe.Controllers
             return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
         }
 
-        /// <summary>
-        /// Retrieves the working days of a job in Arabic
-        /// </summary>
-        /// <remarks>
-        /// This endpoint returns the working days for a specific job translated into Arabic.
-        /// No authentication is required to access this endpoint.
-        /// 
-        /// Sample request:
-        /// 
-        ///     GET /Jobs/5/days
-        ///     
-        /// Sample response:
-        /// 
-        ///     ["السبت", "الأحد", "الاثنين", "الثلاثاء", "الأربعاء"]
-        /// </remarks>
-        /// <param name="Id">The unique identifier of the job</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        /// <response code="200">Returns the list of working days in Arabic</response>
-        /// <response code="400">Bad request - Possible errors:
-        /// - JobNotFound: The specified job ID does not exist
-        /// </response>
-        [HttpGet("{Id}/days")]
-        [AllowAnonymous]
-        [Produces("application/json")]
-        [ProducesResponseType(typeof(IEnumerable<string>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetWorkDaysInArabic([FromRoute] int Id, CancellationToken cancellationToken)
-        {
-            var result = await _jobService.GetWorkDaysAtJobInArabicAsync(Id, cancellationToken);
-            return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
-        }
+
 
         /// <summary>
         /// Closes a job posting

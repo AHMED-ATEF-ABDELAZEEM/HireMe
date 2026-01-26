@@ -18,5 +18,6 @@ namespace HireMe.Contracts.Job.Responses
         public string? Description { get; set; }
         public string? Experience { get; set; }
         public string GovernorateName { get; set; } = string.Empty;
+        public IEnumerable<string> WorkingDaysInArabic { get; set; } = new List<string>();
     }
 }
